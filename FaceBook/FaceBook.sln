@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceBook", "FaceBook\FaceBook.csproj", "{892DE636-A429-436C-BFBC-586F571B426D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Constants.csproj", "{1608CBE8-91C8-4502-80D4-047DAEBD8689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engines", "Engines\Engines.csproj", "{43626146-B80F-40AC-813C-70D2075A6843}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{892DE636-A429-436C-BFBC-586F571B426D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{892DE636-A429-436C-BFBC-586F571B426D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{892DE636-A429-436C-BFBC-586F571B426D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1608CBE8-91C8-4502-80D4-047DAEBD8689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1608CBE8-91C8-4502-80D4-047DAEBD8689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1608CBE8-91C8-4502-80D4-047DAEBD8689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1608CBE8-91C8-4502-80D4-047DAEBD8689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43626146-B80F-40AC-813C-70D2075A6843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43626146-B80F-40AC-813C-70D2075A6843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43626146-B80F-40AC-813C-70D2075A6843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43626146-B80F-40AC-813C-70D2075A6843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

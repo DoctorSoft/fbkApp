@@ -21,86 +21,24 @@ namespace Engines.Engines.RegistrationEngine
             IWebElement birthdayDay = GetWebElementByName(driver, "birthday_day");
             IWebElement birthdayMonth = GetWebElementByName(driver, "birthday_month");
             IWebElement birthdayYear = GetWebElementByName(driver, "birthday_year");
+            IWebElement submitButton = GetWebElementByName(driver, "websubmit");
+            
             IWebElement gender = model.Gender == Gender.Female ? GetWebElementById(driver, "u_0_d") : GetWebElementById(driver, "u_0_e");
 
-            if (lastNameInput != null)
-            {
-                lastNameInput.Clear();
-                lastNameInput.SendKeys(model.LastName);
-            }
+            AddTextInElement(lastNameInput, model.LastName);
+            AddTextInElement(firstNameInput, model.FirstName);
+            AddTextInElement(emailInput, model.Email);
+            AddTextInElement(confirmationEmailInput, model.Email);
+            AddTextInElement(passwordInput, model.Password);
 
-            if (firstNameInput != null)
-            {
-                firstNameInput.Clear();
-                firstNameInput.SendKeys(model.FirstName);
-            }
+            GetSelectElement(birthdayDay, model.Birthday.Day);
+            GetSelectElement(birthdayMonth, model.Birthday.Month);
+            GetSelectElement(birthdayYear, model.Birthday.Year);
 
-            if (emailInput != null)
-            {
-                emailInput.Clear();
-                emailInput.SendKeys(model.Email);
-            }
-            if (confirmationEmailInput != null)
-            {
-                confirmationEmailInput.Clear();
-                confirmationEmailInput.SendKeys(model.Email);
-            }
-            if (passwordInput != null)
-            {
-                passwordInput.Clear();
-                passwordInput.SendKeys(model.Password);
-            }
+            ClickElement(gender);
 
-            if (birthdayDay != null)
-            {
-                birthdayDay.FindElement(By.CssSelector("option[value='" + model.Birthday.Day + "']")).Click();
-            }
-
-            if (birthdayMonth != null)
-            {
-                birthdayMonth.FindElement(By.CssSelector("option[value='" + model.Birthday.Month + "']")).Click();
-            }
-
-            if (birthdayYear != null)
-            {
-                birthdayYear.FindElement(By.CssSelector("option[value='" + model.Birthday.Year + "']")).Click();
-            }
-            if (gender != null)
-            {
-                gender.Click();
-            }
-
-            /*var registrtionData = links.FirstOrDefault(element => element.Text == "Вход");
-            if (registrtionData == null)
-            {
-                return new VoidResult();
-            }
-            registrtionData.Click();
-
-            Thread.Sleep(500);
-
-            IList<IWebElement> userNameInputs = driver.FindElements(By.Name("username"));
-            userNameInputs.FirstOrDefault().SendKeys(model.UserName);
-
-            Thread.Sleep(500);
-
-            IList<IWebElement> passwordInuts = driver.FindElements(By.Name("password"));
-            passwordInuts.FirstOrDefault().SendKeys(model.Password);
-
-            Thread.Sleep(500);
-
-            IList<IWebElement> buttons = driver.FindElements(By.TagName("button"));
-            buttons.FirstOrDefault(element => element.Text == "Войти").Click();
-
-            Thread.Sleep(2000);
-
-            if (!base.NavigateToUrl(driver))
-            {
-                return GetDefaultResult();
-            }
-
-            Thread.Sleep(1000);*/
-
+            ClickElement(submitButton);
+            
             return new VoidResult();
         }
 
@@ -112,6 +50,31 @@ namespace Engines.Engines.RegistrationEngine
         private IWebElement GetWebElementById(RemoteWebDriver driver, string idName)
         {
             return driver.FindElements(By.Id(idName)).FirstOrDefault();
+        }
+
+        private void AddTextInElement(IWebElement element, string text)
+        {
+            if (element != null)
+            {
+                element.Clear();
+                element.SendKeys(text);
+            }
+        }
+
+        private void GetSelectElement(IWebElement selectElement, int value)
+        {
+            if (selectElement != null)
+            {
+                selectElement.FindElement(By.CssSelector("option[value='" + value + "']")).Click();
+            }
+        }
+
+        private void ClickElement(IWebElement element)
+        {
+            if (element != null)
+            {
+                element.Click();
+            }
         }
     }
 }

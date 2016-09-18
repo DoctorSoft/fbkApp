@@ -35,7 +35,14 @@ namespace FaceBook
 
         public InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider)
         {
-            return inputDataProvider.GetInputData();
+            var inputData = inputDataProvider.GetInputData();
+            var passGenerator = new PasswordGenerator();
+
+            foreach (var user in inputData.usersData)
+            {
+                user.Password = passGenerator.Generate(8);
+            }
+            return inputData;
         }
     }
 }

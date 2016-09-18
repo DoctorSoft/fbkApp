@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using Constants;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
@@ -37,7 +35,7 @@ namespace Engines.Engines.RegistrationEngine
 
             ClickElement(gender);
 
-            ClickElement(submitButton);
+            //ClickElement(submitButton);
             
             return new VoidResult();
         }
@@ -54,11 +52,13 @@ namespace Engines.Engines.RegistrationEngine
 
         private void AddTextInElement(IWebElement element, string text)
         {
-            if (element != null)
+            if (element == null || text == null)
             {
-                element.Clear();
-                element.SendKeys(text);
+                return;
             }
+
+            element.Clear();
+            element.SendKeys(text);
         }
 
         private void GetSelectElement(IWebElement selectElement, int value)

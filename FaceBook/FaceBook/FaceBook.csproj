@@ -47,6 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FaceBookService.cs" />
+    <Compile Include="Interfaces\IFaceBookService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,6 +82,10 @@
     <ProjectReference Include="..\Engines\Engines.csproj">
       <Project>{43626146-B80F-40AC-813C-70D2075A6843}</Project>
       <Name>Engines</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InputData\InputData.csproj">
+      <Project>{79E38E49-EDD0-464F-BE38-6AC042F9251E}</Project>
+      <Name>InputData</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

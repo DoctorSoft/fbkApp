@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using InputData.Implementation;
 using OpenQA.Selenium.Chrome;
 
 namespace FaceBook
@@ -8,7 +9,11 @@ namespace FaceBook
         public static void Main(string[] args)
         {
             var driver = new ChromeDriver();
-            new FaceBookService().Registration(driver);
+            var service = new FaceBookService();
+
+            var userList = service.GetRegistrationUserData(new InputDataProvider("usersDB.xlsx"));
+
+            service.Registration(driver, userList.usersData);
         }
     }
 }

@@ -10,6 +10,10 @@ namespace Engines.Engines.RegistrationEngine
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
             NavigateToUrl(driver);
+            if (!GetLogOutStatus(driver))
+            {
+                LogOut(driver);
+            }
 
             IWebElement lastNameInput = GetWebElementByName(driver, "firstname");
             IWebElement firstNameInput = GetWebElementByName(driver, "lastname");
@@ -49,6 +53,10 @@ namespace Engines.Engines.RegistrationEngine
         {
             return driver.FindElements(By.Id(idName)).FirstOrDefault();
         }
+        private IWebElement GetWebElementByClass(RemoteWebDriver driver, string className)
+        {
+            return driver.FindElements(By.ClassName(className)).FirstOrDefault();
+        }
 
         private void AddTextInElement(IWebElement element, string text)
         {
@@ -63,18 +71,34 @@ namespace Engines.Engines.RegistrationEngine
 
         private void GetSelectElement(IWebElement selectElement, int value)
         {
-            if (selectElement != null)
+            if (selectElement == null || value == null)
             {
-                selectElement.FindElement(By.CssSelector("option[value='" + value + "']")).Click();
+                return;
             }
+            selectElement.FindElement(By.CssSelector("option[value='" + value + "']")).Click();
         }
 
         private void ClickElement(IWebElement element)
         {
-            if (element != null)
+            if (element == null)
             {
-                element.Click();
+                return;
             }
+            element.Click();
+        }
+
+        private bool GetLogOutStatus(RemoteWebDriver driver)
+        {
+            IWebElement profileOptionElement = GetWebElementById(driver, "userNavigationLabel");
+            return profileOptionElement == null;
+        }
+
+        private void LogOut(RemoteWebDriver driver)
+        {
+            IWebElement profileOptionElement = GetWebElementById(driver, "userNavigationLabel");
+            profileOptionElement.Click();
+            IWebElement logOutButton = GetWebElementByClass(driver, "_54ni navSubmenu __MenuItem");
+            logOutButton.Click();
         }
     }
 }

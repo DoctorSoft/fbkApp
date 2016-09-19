@@ -28,17 +28,21 @@ namespace InputData.Implementation
             {
                 var usersDataSheet = (Excel.Worksheet)workBook.Worksheets.Item[(int)SheetNumber.UserData];
                 var usersData = ParseUserDataSheet(usersDataSheet);
+                workBook.Save();
 
                 return new InputDataModel
                 {
                     usersData = usersData
                 };
+
             }
         }
 
         public List<RegistrationModel> ParseUserDataSheet(Excel.Worksheet worksheet)
         {
             var users = new List<RegistrationModel>();
+            var passGenerator = new PasswordGenerator();
+
             if (worksheet == null)
             {
                 return users;
@@ -61,6 +65,13 @@ namespace InputData.Implementation
                 var email = (worksheet.Cells[rowIndex, (int)ColumnName.Email] as Excel.Range).Value;
                 var birthday = (worksheet.Cells[rowIndex, (int)ColumnName.Birthday] as Excel.Range).Value;
                 var gender = (worksheet.Cells[rowIndex, (int)ColumnName.Gender] as Excel.Range).Value;
+                var password = (worksheet.Cells[rowIndex, (int)ColumnName.Password] as Excel.Range).Value;
+
+                if (password == null)
+                {
+                    password = passGenerator.Generate(8);
+                    (worksheet.Cells[rowIndex, (int) ColumnName.Password] as Excel.Range).Value = password;
+                }
 
                 if (id == null || lastName == null || firstName == null || email == null || birthday == null || gender == null)
                 {
@@ -73,6 +84,7 @@ namespace InputData.Implementation
                     LastName = lastName,
                     FirstName = firstName,
                     Email = email,
+                    Password = password,
                     Birthday = Convert.ToDateTime(birthday),
                     Gender = gender == 1 ? Gender.Female : Gender.Male
                 });

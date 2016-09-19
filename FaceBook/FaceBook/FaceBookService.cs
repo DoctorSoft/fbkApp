@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading;
-using System.Windows.Forms;
-using Constants;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
 using InputData.Implementation;
@@ -36,13 +34,8 @@ namespace FaceBook
         public InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider)
         {
             var inputData = inputDataProvider.GetInputData();
-            var passGenerator = new PasswordGenerator();
-
-            foreach (var user in inputData.usersData)
-            {
-                user.Password = passGenerator.Generate(8);
-            }
             return inputData;
         }
+
     }
 }

@@ -19,6 +19,10 @@ namespace InputData.Decorators
             get { return workBook.Worksheets; }
         }
 
+        public void Save()
+        {
+            workBook.Save();
+        }
         public void Dispose()
         {
             workBook.Close(false);

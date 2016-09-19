@@ -71,7 +71,7 @@ namespace Engines.Engines.RegistrationEngine
 
         private void GetSelectElement(IWebElement selectElement, int value)
         {
-            if (selectElement == null || value == null)
+            if (selectElement == null || value == 0)
             {
                 return;
             }

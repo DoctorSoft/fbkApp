@@ -11,7 +11,9 @@ namespace FaceBook
             var driver = new ChromeDriver();
             var service = new FaceBookService();
 
-            var userList = service.GetRegistrationUserData(new InputDataProvider("usersDB.xlsx"));
+            var inpuDataProvider = new InputDataProvider("usersDB.xlsx");
+
+            var userList = service.GetRegistrationUserData(inpuDataProvider);
 
             service.Registration(driver, userList.usersData);
         }

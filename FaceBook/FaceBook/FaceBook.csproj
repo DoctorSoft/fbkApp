@@ -75,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChangeExcel\ChangeExcel.csproj">
+      <Project>{765BE41D-2B50-4773-A6B9-4EBCF37A6B04}</Project>
+      <Name>ChangeExcel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Constants\Constants.csproj">
       <Project>{1608CBE8-91C8-4502-80D4-047DAEBD8689}</Project>
       <Name>Constants</Name>

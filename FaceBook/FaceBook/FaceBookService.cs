@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading;
+using ChangeExcel.Implementation;
 using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
-using InputData.Implementation;
 using InputData.InputModels;
 using InputData.Interfaces;
 using OpenQA.Selenium.Remote;
@@ -31,6 +30,9 @@ namespace FaceBook
 
                 if (successRegistration)
                 {
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, true);
+
+                    Thread.Sleep(1500);
                     new ConformationRegistrationEngine().Execute(driver,
                     new ConformationRegistrationModel
                     {
@@ -38,6 +40,10 @@ namespace FaceBook
                         EmailPassword = user.EmailPassword,
                         FacebookPassword = user.FacebookPassword
                     });
+                }
+                else
+                {
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, false);
                 }
 
                 Thread.Sleep(2000);

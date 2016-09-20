@@ -9,6 +9,7 @@
         FacebookPassword = 5,
         EmailPassword = 6,
         Birthday = 7,
-        Gender = 8
+        Gender = 8,
+        Registrated = 9
     }
 }

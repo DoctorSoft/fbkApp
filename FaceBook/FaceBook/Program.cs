@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using InputData.Implementation;
+﻿using InputData.Implementation;
 using OpenQA.Selenium.Chrome;
 
 namespace FaceBook

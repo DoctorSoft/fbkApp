@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
 using Constants;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using Keys = OpenQA.Selenium.Keys;
 
 namespace Engines.Engines.RegistrationEngine
 {
@@ -10,37 +14,48 @@ namespace Engines.Engines.RegistrationEngine
         protected override bool ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
             NavigateToUrl(driver);
-            if (!GetLogOutStatus(driver))
+            try
             {
-                LogOut(driver);
+                if (!GetLogOutStatus(driver))
+                {
+                    LogOut(driver);
+                }
+
+                IWebElement lastNameInput = GetWebElementByName(driver, "firstname");
+                IWebElement firstNameInput = GetWebElementByName(driver, "lastname");
+                IWebElement emailInput = GetWebElementByName(driver, "reg_email__");
+                IWebElement confirmationEmailInput = GetWebElementByName(driver, "reg_email_confirmation__");
+                IWebElement passwordInput = GetWebElementByName(driver, "reg_passwd__");
+                IWebElement birthdayDay = GetWebElementByName(driver, "birthday_day");
+                IWebElement birthdayMonth = GetWebElementByName(driver, "birthday_month");
+                IWebElement birthdayYear = GetWebElementByName(driver, "birthday_year");
+                IWebElement submitButton = GetWebElementByName(driver, "websubmit");
+
+                IWebElement gender = model.Gender == Gender.Female ? GetWebElementById(driver, "u_0_d") : GetWebElementById(driver, "u_0_e");
+
+                AddTextInElement(lastNameInput, model.LastName);
+                AddTextInElement(firstNameInput, model.FirstName);
+                AddTextInElement(emailInput, model.Email);
+                AddTextInElement(confirmationEmailInput, model.Email);
+                AddTextInElement(passwordInput, model.FacebookPassword);
+
+                GetSelectElement(birthdayDay, model.Birthday.Day);
+                GetSelectElement(birthdayMonth, model.Birthday.Month);
+                GetSelectElement(birthdayYear, model.Birthday.Year);
+
+                ClickElement(gender);
+
+                ClickElement(submitButton);
+
+                if (!CheckErrors(driver))
+                {
+                    return false;
+                }
             }
-
-            IWebElement lastNameInput = GetWebElementByName(driver, "firstname");
-            IWebElement firstNameInput = GetWebElementByName(driver, "lastname");
-            IWebElement emailInput = GetWebElementByName(driver, "reg_email__");
-            IWebElement confirmationEmailInput = GetWebElementByName(driver, "reg_email_confirmation__");
-            IWebElement passwordInput = GetWebElementByName(driver, "reg_passwd__");
-            IWebElement birthdayDay = GetWebElementByName(driver, "birthday_day");
-            IWebElement birthdayMonth = GetWebElementByName(driver, "birthday_month");
-            IWebElement birthdayYear = GetWebElementByName(driver, "birthday_year");
-            IWebElement submitButton = GetWebElementByName(driver, "websubmit");
-            
-            IWebElement gender = model.Gender == Gender.Female ? GetWebElementById(driver, "u_0_d") : GetWebElementById(driver, "u_0_e");
-
-            AddTextInElement(lastNameInput, model.LastName);
-            AddTextInElement(firstNameInput, model.FirstName);
-            AddTextInElement(emailInput, model.Email);
-            AddTextInElement(confirmationEmailInput, model.Email);
-            AddTextInElement(passwordInput, model.FacebookPassword);
-
-            GetSelectElement(birthdayDay, model.Birthday.Day);
-            GetSelectElement(birthdayMonth, model.Birthday.Month);
-            GetSelectElement(birthdayYear, model.Birthday.Year);
-
-            ClickElement(gender);
-
-            ClickElement(submitButton);
-            
+            catch (Exception ex)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -95,10 +110,17 @@ namespace Engines.Engines.RegistrationEngine
 
         private void LogOut(RemoteWebDriver driver)
         {
+            driver.Keyboard.SendKeys(Keys.Enter);
             IWebElement profileOptionElement = GetWebElementById(driver, "userNavigationLabel");
             ClickElement(profileOptionElement);
             IWebElement logOutButton = GetWebElementByClass(driver, "_54ni navSubmenu __MenuItem");
             ClickElement(logOutButton);
+        }
+
+        private bool CheckErrors(RemoteWebDriver driver)
+        {
+            IWebElement profileOptionElement = GetWebElementById(driver, "reg_error_inner");
+            return profileOptionElement != null ? true : false;
         }
     }
 }

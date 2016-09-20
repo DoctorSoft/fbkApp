@@ -13,7 +13,9 @@ namespace Engines.Engines.RegistrationEngine
 
         public string Email { get; set; }
 
-        public string Password { get; set; }
+        public string FacebookPassword { get; set; }
+
+        public string EmailPassword { get; set; }
 
         public DateTime Birthday { get; set; }
 

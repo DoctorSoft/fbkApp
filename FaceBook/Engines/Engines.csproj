@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engines\AbstractEngine.cs" />
+    <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationEngine.cs" />
+    <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationModel.cs" />
     <Compile Include="Engines\IEngine.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationEngine.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationModel.cs" />

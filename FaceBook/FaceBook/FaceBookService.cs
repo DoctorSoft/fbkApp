@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading;
+using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
 using InputData.Implementation;
@@ -16,16 +17,28 @@ namespace FaceBook
         {
             foreach (var user in userList)
             {
-                new RegistrationEngine().Execute(driver,
+                var successRegistration = new RegistrationEngine().Execute(driver,
                     new RegistrationModel
                     {
                         LastName = user.LastName,
                         FirstName = user.FirstName,
                         Email = user.Email,
-                        Password = user.Password,
+                        FacebookPassword = user.FacebookPassword,
+                        EmailPassword = user.EmailPassword,
                         Birthday = user.Birthday,
                         Gender = user.Gender
                     });
+
+                if (successRegistration)
+                {
+                    new ConformationRegistrationEngine().Execute(driver,
+                    new ConformationRegistrationModel
+                    {
+                        EmailLogin = user.Email,
+                        EmailPassword = user.EmailPassword,
+                        FacebookPassword = user.FacebookPassword
+                    });
+                }
 
                 Thread.Sleep(2000);
             }
@@ -36,6 +49,5 @@ namespace FaceBook
             var inputData = inputDataProvider.GetInputData();
             return inputData;
         }
-
     }
 }

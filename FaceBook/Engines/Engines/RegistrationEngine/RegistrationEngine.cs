@@ -5,9 +5,9 @@ using OpenQA.Selenium.Remote;
 
 namespace Engines.Engines.RegistrationEngine
 {
-    public class RegistrationEngine: AbstractEngine<RegistrationModel, VoidResult>
+    public class RegistrationEngine: AbstractEngine<RegistrationModel, bool>
     {
-        protected override VoidResult ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
+        protected override bool ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
             NavigateToUrl(driver);
             if (!GetLogOutStatus(driver))
@@ -31,7 +31,7 @@ namespace Engines.Engines.RegistrationEngine
             AddTextInElement(firstNameInput, model.FirstName);
             AddTextInElement(emailInput, model.Email);
             AddTextInElement(confirmationEmailInput, model.Email);
-            AddTextInElement(passwordInput, model.Password);
+            AddTextInElement(passwordInput, model.FacebookPassword);
 
             GetSelectElement(birthdayDay, model.Birthday.Day);
             GetSelectElement(birthdayMonth, model.Birthday.Month);
@@ -39,9 +39,9 @@ namespace Engines.Engines.RegistrationEngine
 
             ClickElement(gender);
 
-            //ClickElement(submitButton);
+            ClickElement(submitButton);
             
-            return new VoidResult();
+            return true;
         }
 
         private IWebElement GetWebElementByName(RemoteWebDriver driver, string name)
@@ -96,9 +96,9 @@ namespace Engines.Engines.RegistrationEngine
         private void LogOut(RemoteWebDriver driver)
         {
             IWebElement profileOptionElement = GetWebElementById(driver, "userNavigationLabel");
-            profileOptionElement.Click();
+            ClickElement(profileOptionElement);
             IWebElement logOutButton = GetWebElementByClass(driver, "_54ni navSubmenu __MenuItem");
-            logOutButton.Click();
+            ClickElement(logOutButton);
         }
     }
 }

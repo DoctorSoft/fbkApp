@@ -6,8 +6,9 @@
         LastName = 2,
         FirstName = 3,
         Email = 4,
-        Password = 5,
-        Birthday = 6,
-        Gender = 7
+        FacebookPassword = 5,
+        EmailPassword = 6,
+        Birthday = 7,
+        Gender = 8
     }
 }

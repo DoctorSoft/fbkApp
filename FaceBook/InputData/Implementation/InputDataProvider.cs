@@ -60,17 +60,22 @@ namespace InputData.Implementation
             for (var rowIndex = (int)RowName.StartData; rowIndex <= rowCount; rowIndex++)
             {
                 var id = (worksheet.Cells[rowIndex, (int)ColumnName.Id] as Excel.Range).Value;
+                if (id == null)
+                {
+                    continue;
+                }
                 var lastName = (worksheet.Cells[rowIndex, (int)ColumnName.LastName] as Excel.Range).Value;
                 var firstName = (worksheet.Cells[rowIndex, (int)ColumnName.FirstName] as Excel.Range).Value;
                 var email = (worksheet.Cells[rowIndex, (int)ColumnName.Email] as Excel.Range).Value;
                 var birthday = (worksheet.Cells[rowIndex, (int)ColumnName.Birthday] as Excel.Range).Value;
                 var gender = (worksheet.Cells[rowIndex, (int)ColumnName.Gender] as Excel.Range).Value;
-                var password = (worksheet.Cells[rowIndex, (int)ColumnName.Password] as Excel.Range).Value;
+                var facebookPassword = (worksheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value;
+                var emailPassword = (worksheet.Cells[rowIndex, (int)ColumnName.EmailPassword] as Excel.Range).Value;
 
-                if (password == null)
+                if (facebookPassword == null)
                 {
-                    password = passGenerator.Generate(8);
-                    (worksheet.Cells[rowIndex, (int) ColumnName.Password] as Excel.Range).Value = password;
+                    facebookPassword = passGenerator.Generate(8);
+                    (worksheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value = facebookPassword;
                 }
 
                 if (id == null || lastName == null || firstName == null || email == null || birthday == null || gender == null)
@@ -84,7 +89,8 @@ namespace InputData.Implementation
                     LastName = lastName,
                     FirstName = firstName,
                     Email = email,
-                    Password = password,
+                    FacebookPassword = facebookPassword,
+                    EmailPassword = emailPassword,
                     Birthday = Convert.ToDateTime(birthday),
                     Gender = gender == 1 ? Gender.Female : Gender.Male
                 });

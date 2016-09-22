@@ -67,8 +67,7 @@ namespace ChangeExcel.Implementation
 
         private bool GetStatus(ErrorModel errors)
         {
-            if (errors != null) return false;
-            else return true;
+            return errors == null;
         }
     }
 }

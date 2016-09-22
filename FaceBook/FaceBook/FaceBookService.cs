@@ -2,6 +2,7 @@
 using System.Threading;
 using ChangeExcel.Implementation;
 using Engines.Engines.ConformationRegistrationEngine;
+using Engines.Engines.InitialProfileSetup;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
 using InputData.InputModels;
@@ -30,7 +31,7 @@ namespace FaceBook
 
                 if (statusRegistration == null)
                 {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, statusRegistration);
+                    /*new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, statusRegistration);
 
                     Thread.Sleep(1500);
                     new ConformationRegistrationEngine().Execute(driver,
@@ -39,7 +40,9 @@ namespace FaceBook
                         EmailLogin = user.Email,
                         EmailPassword = user.EmailPassword,
                         FacebookPassword = user.FacebookPassword
-                    });
+                    });*/
+
+                    InitialProfileSetup(driver); //start setup service
                 }
                 else
                 {
@@ -54,6 +57,11 @@ namespace FaceBook
         {
             var inputData = inputDataProvider.GetInputData();
             return inputData;
+        }
+
+        public void InitialProfileSetup(RemoteWebDriver driver)
+        {
+            new InitialProfileSetupEngine().Execute(driver, new InitialProfileSetupModel());
         }
     }
 }

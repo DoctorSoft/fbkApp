@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 using Constants;
 using Engines.Engines.Models;
 using OpenQA.Selenium;
@@ -122,6 +121,8 @@ namespace Engines.Engines.RegistrationEngine
 
         private bool CheckErrors(RemoteWebDriver driver)
         {
+            Thread.Sleep(2000);
+            driver.Keyboard.SendKeys(Keys.Enter);
             IWebElement errorElement = GetWebElementById(driver, "reg_error_inner");
             return errorElement != null ? true : false;
         }

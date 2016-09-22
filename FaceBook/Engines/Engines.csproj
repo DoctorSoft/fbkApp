@@ -45,10 +45,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumExtensions\SettingsUrlExtension.cs" />
+    <Compile Include="Enums\SettingsUrl.cs" />
     <Compile Include="Engines\AbstractEngine.cs" />
     <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationEngine.cs" />
     <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationModel.cs" />
     <Compile Include="Engines\IEngine.cs" />
+    <Compile Include="Engines\InitialProfileSetup\InitialProfileSetupEngine.cs" />
+    <Compile Include="Engines\InitialProfileSetup\InitialProfileSetupModel.cs" />
     <Compile Include="Engines\Models\ErrorModel.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationEngine.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationModel.cs" />
@@ -64,6 +68,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

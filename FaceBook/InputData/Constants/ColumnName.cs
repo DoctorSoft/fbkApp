@@ -10,6 +10,7 @@
         EmailPassword = 6,
         Birthday = 7,
         Gender = 8,
-        Registrated = 9
+        RegistratedStatus = 9,
+        TextError = 10
     }
 }

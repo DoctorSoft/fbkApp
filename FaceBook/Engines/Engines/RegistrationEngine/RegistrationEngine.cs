@@ -3,15 +3,16 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Constants;
+using Engines.Engines.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using Keys = OpenQA.Selenium.Keys;
 
 namespace Engines.Engines.RegistrationEngine
 {
-    public class RegistrationEngine: AbstractEngine<RegistrationModel, bool>
+    public class RegistrationEngine: AbstractEngine<RegistrationModel, ErrorModel>
     {
-        protected override bool ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
+        protected override ErrorModel ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
             NavigateToUrl(driver);
             try
@@ -47,16 +48,18 @@ namespace Engines.Engines.RegistrationEngine
 
                 ClickElement(submitButton);
 
-                if (!CheckErrors(driver))
+                if (CheckErrors(driver))
                 {
-                    return false;
+                    return new ErrorModel
+                    {
+                        ErrorText = GetErrorText(driver)
+                    };
                 }
             }
             catch (Exception ex)
             {
-                return false;
             }
-            return true;
+            return null;
         }
 
         private IWebElement GetWebElementByName(RemoteWebDriver driver, string name)
@@ -119,8 +122,15 @@ namespace Engines.Engines.RegistrationEngine
 
         private bool CheckErrors(RemoteWebDriver driver)
         {
-            IWebElement profileOptionElement = GetWebElementById(driver, "reg_error_inner");
-            return profileOptionElement != null ? true : false;
+            IWebElement errorElement = GetWebElementById(driver, "reg_error_inner");
+            return errorElement != null ? true : false;
+        }
+
+        private string GetErrorText(RemoteWebDriver driver)
+        {
+            IWebElement errorElement = GetWebElementById(driver, "reg_error_inner");
+            string textError = errorElement.Text;
+            return textError;
         }
     }
 }

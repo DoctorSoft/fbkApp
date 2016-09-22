@@ -8,6 +8,7 @@ using InputData.Decorators;
 using InputData.Implementation;
 using InputData.InputModels;
 using Excel = Microsoft.Office.Interop.Excel;
+using Engines.Engines.Models;
 
 namespace ChangeExcel.Implementation
 {
@@ -20,7 +21,7 @@ namespace ChangeExcel.Implementation
             this.fileName = fileName;
         }
 
-        public bool RecordRegistratedStatus(RegistrationModel model, bool status)
+        public bool RecordRegistratedStatus(RegistrationModel model, ErrorModel error)
         {
 
             var currentDirectory = Directory.GetCurrentDirectory();
@@ -29,7 +30,7 @@ namespace ChangeExcel.Implementation
             using (var workBook = new ExcelWorkBook(path))
             {
                 var usersDataSheet = (Excel.Worksheet)workBook.Worksheets.Item[(int)SheetNumber.UserData];
-                var recordingStatus = RecordStatus(usersDataSheet, model.Id, status);
+                var recordingStatus = RecordStatus(usersDataSheet, model.Id, error);
 
                 workBook.Save();
 
@@ -42,9 +43,10 @@ namespace ChangeExcel.Implementation
             throw new System.NotImplementedException();
         }
 
-        public bool RecordStatus(Excel.Worksheet worksheet, int userId, bool status)
+        public bool RecordStatus(Excel.Worksheet worksheet, int userId, ErrorModel errors)
         {
             var range = worksheet.UsedRange;
+            var statusRegistration = GetStatus(errors);
 
             var rowCount = range.Rows.Count;
 
@@ -55,11 +57,18 @@ namespace ChangeExcel.Implementation
                 {
                     continue;
                 }
-                (worksheet.Cells[rowIndex, (int)ColumnName.Registrated] as Excel.Range).Value = status;
+                (worksheet.Cells[rowIndex, (int)ColumnName.RegistratedStatus] as Excel.Range).Value = statusRegistration;
+                if (!statusRegistration) (worksheet.Cells[rowIndex, (int)ColumnName.TextError] as Excel.Range).Value = errors.ErrorText;
                 break;
             }
 
             return true;
+        }
+
+        private bool GetStatus(ErrorModel errors)
+        {
+            if (errors != null) return false;
+            else return true;
         }
     }
 }

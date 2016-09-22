@@ -49,9 +49,10 @@
     <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationEngine.cs" />
     <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationModel.cs" />
     <Compile Include="Engines\IEngine.cs" />
+    <Compile Include="Engines\Models\ErrorModel.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationEngine.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationModel.cs" />
-    <Compile Include="Engines\VoidResult.cs" />
+    <Compile Include="Engines\Models\VoidResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

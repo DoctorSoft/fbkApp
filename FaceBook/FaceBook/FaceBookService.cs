@@ -16,7 +16,7 @@ namespace FaceBook
         {
             foreach (var user in userList)
             {
-                var successRegistration = new RegistrationEngine().Execute(driver,
+                var statusRegistration = new RegistrationEngine().Execute(driver,
                     new RegistrationModel
                     {
                         LastName = user.LastName,
@@ -28,9 +28,9 @@ namespace FaceBook
                         Gender = user.Gender
                     });
 
-                if (successRegistration)
+                if (statusRegistration == null)
                 {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, true);
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, statusRegistration);
 
                     Thread.Sleep(1500);
                     new ConformationRegistrationEngine().Execute(driver,
@@ -43,7 +43,7 @@ namespace FaceBook
                 }
                 else
                 {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, false);
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, statusRegistration);
                 }
 
                 Thread.Sleep(2000);

@@ -2,7 +2,9 @@
 using System.Threading;
 using Engines.EnumExtensions;
 using Engines.Enums;
+using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
 
 namespace Engines.Engines.InitialProfileSetup
@@ -17,40 +19,47 @@ namespace Engines.Engines.InitialProfileSetup
         }
         private bool SetPrivacyOptions(RemoteWebDriver driver)
         {
+            // set privacy
+
             NavigateToUrl(driver, SettingsUrl.PrivacyUrl.GetDiscription());
 
-            Thread.Sleep(6000);
-            driver.Keyboard.SendKeys(Keys.Enter);
+            Thread.Sleep(1500);
 
-            IWebElement visibilityOfPublications = GetWebElementByClass(driver, "fbSettingsListItemContent fcg");
-            ClickElement(visibilityOfPublications);
+            IWebElement visibilityOfPublications = HtmlHelper.GetElementByCssSelector(driver, ".fbSettingsListItemContent.fcg");
+            if (visibilityOfPublications.Displayed)
+            {
+                IWebElement dd = HtmlHelper.GetElementByClass(driver, "_3ixn");
+                dd.Click();
+
+                ClickElement(visibilityOfPublications);
+            }
 
             Thread.Sleep(500);
 
-            IWebElement visibilityOfPublicationsDropDownList = GetWebElementByClass(driver, "_55pe");
+            IWebElement visibilityOfPublicationsDropDownList = HtmlHelper.GetElementByClass(driver, "_55pe");
             ClickElement(visibilityOfPublicationsDropDownList);
 
             Thread.Sleep(500);
 
-            IWebElement visibilityToAll = GetWebElementByClass(driver, "_54nh _4chm _48u0");
+            IWebElement visibilityToAll = HtmlHelper.GetElementByCssSelector(driver, "._54nh._4chm._48u0");
             ClickElement(visibilityToAll);
+
+
+            // disable chat
+
+            IWebElement chatOptionButton = HtmlHelper.GetElementById(driver, "._5vmb.button._p");
+
+            chatOptionButton.Click();
+            
+            IWebElement disableChatButton = HtmlHelper.GetElementByClass(driver, "_54nh");
+            disableChatButton.Click();
+
+
             
             return true;
             
         }
-        private IWebElement GetWebElementByName(RemoteWebDriver driver, string name)
-        {
-            return driver.FindElements(By.Name(name)).FirstOrDefault();
-        }
 
-        private IWebElement GetWebElementById(RemoteWebDriver driver, string idName)
-        {
-            return driver.FindElements(By.Id(idName)).FirstOrDefault();
-        }
-        private IWebElement GetWebElementByClass(RemoteWebDriver driver, string className)
-        {
-            return driver.FindElements(By.ClassName(className)).FirstOrDefault();
-        }
         private void ClickElement(IWebElement element)
         {
             if (element == null)

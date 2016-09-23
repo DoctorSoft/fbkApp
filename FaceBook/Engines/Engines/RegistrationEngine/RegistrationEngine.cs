@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Constants;
 using Engines.Engines.Models;
+using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using Keys = OpenQA.Selenium.Keys;
@@ -21,17 +22,17 @@ namespace Engines.Engines.RegistrationEngine
                     LogOut(driver);
                 }
 
-                IWebElement lastNameInput = GetWebElementByName(driver, "firstname");
-                IWebElement firstNameInput = GetWebElementByName(driver, "lastname");
-                IWebElement emailInput = GetWebElementByName(driver, "reg_email__");
-                IWebElement confirmationEmailInput = GetWebElementByName(driver, "reg_email_confirmation__");
-                IWebElement passwordInput = GetWebElementByName(driver, "reg_passwd__");
-                IWebElement birthdayDay = GetWebElementByName(driver, "birthday_day");
-                IWebElement birthdayMonth = GetWebElementByName(driver, "birthday_month");
-                IWebElement birthdayYear = GetWebElementByName(driver, "birthday_year");
-                IWebElement submitButton = GetWebElementByName(driver, "websubmit");
+                IWebElement lastNameInput = HtmlHelper.GetElementByName(driver, "firstname");
+                IWebElement firstNameInput = HtmlHelper.GetElementByName(driver, "lastname");
+                IWebElement emailInput = HtmlHelper.GetElementByName(driver, "reg_email__");
+                IWebElement confirmationEmailInput = HtmlHelper.GetElementByName(driver, "reg_email_confirmation__");
+                IWebElement passwordInput = HtmlHelper.GetElementByName(driver, "reg_passwd__");
+                IWebElement birthdayDay = HtmlHelper.GetElementByName(driver, "birthday_day");
+                IWebElement birthdayMonth = HtmlHelper.GetElementByName(driver, "birthday_month");
+                IWebElement birthdayYear = HtmlHelper.GetElementByName(driver, "birthday_year");
+                IWebElement submitButton = HtmlHelper.GetElementByName(driver, "websubmit");
 
-                IWebElement gender = model.Gender == Gender.Female ? GetWebElementById(driver, "u_0_d") : GetWebElementById(driver, "u_0_e");
+                IWebElement gender = model.Gender == Gender.Female ? HtmlHelper.GetElementById(driver, "u_0_d") : HtmlHelper.GetElementById(driver, "u_0_e");
 
                 AddTextInElement(lastNameInput, model.LastName);
                 AddTextInElement(firstNameInput, model.FirstName);
@@ -59,20 +60,6 @@ namespace Engines.Engines.RegistrationEngine
             {
             }
             return null;
-        }
-
-        private IWebElement GetWebElementByName(RemoteWebDriver driver, string name)
-        {
-            return driver.FindElements(By.Name(name)).FirstOrDefault();
-        }
-
-        private IWebElement GetWebElementById(RemoteWebDriver driver, string idName)
-        {
-            return driver.FindElements(By.Id(idName)).FirstOrDefault();
-        }
-        private IWebElement GetWebElementByClass(RemoteWebDriver driver, string className)
-        {
-            return driver.FindElements(By.ClassName(className)).FirstOrDefault();
         }
 
         private void AddTextInElement(IWebElement element, string text)
@@ -106,16 +93,16 @@ namespace Engines.Engines.RegistrationEngine
 
         private bool GetLogOutStatus(RemoteWebDriver driver)
         {
-            IWebElement profileOptionElement = GetWebElementById(driver, "userNavigationLabel");
+            IWebElement profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
             return profileOptionElement == null;
         }
 
         private void LogOut(RemoteWebDriver driver)
         {
             driver.Keyboard.SendKeys(Keys.Enter);
-            IWebElement profileOptionElement = GetWebElementById(driver, "userNavigationLabel");
+            IWebElement profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
             ClickElement(profileOptionElement);
-            IWebElement logOutButton = GetWebElementByClass(driver, "_54ni navSubmenu __MenuItem");
+            IWebElement logOutButton = HtmlHelper.GetElementByClass(driver, "_54ni navSubmenu __MenuItem");
             ClickElement(logOutButton);
         }
 
@@ -123,13 +110,13 @@ namespace Engines.Engines.RegistrationEngine
         {
             Thread.Sleep(2000);
             driver.Keyboard.SendKeys(Keys.Enter);
-            IWebElement errorElement = GetWebElementById(driver, "reg_error_inner");
+            IWebElement errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
             return errorElement != null ? true : false;
         }
 
         private string GetErrorText(RemoteWebDriver driver)
         {
-            IWebElement errorElement = GetWebElementById(driver, "reg_error_inner");
+            IWebElement errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
             string textError = errorElement.Text;
             return textError;
         }

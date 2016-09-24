@@ -4,6 +4,7 @@ using ChangeExcel.Implementation;
 using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetup;
+using Engines.Engines.InitialProfileSetupEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
 using InputData.InputModels;

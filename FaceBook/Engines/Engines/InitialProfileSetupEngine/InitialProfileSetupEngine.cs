@@ -1,16 +1,11 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using Engines.EnumExtensions;
 using Engines.Enums;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
 
-namespace Engines.Engines.InitialProfileSetup
+namespace Engines.Engines.InitialProfileSetupEngine
 {
     public class InitialProfileSetupEngine : AbstractEngine<InitialProfileSetupModel, VoidResult>
     {
@@ -27,6 +22,8 @@ namespace Engines.Engines.InitialProfileSetup
             NavigateToUrl(driver, SettingsUrl.PrivacyUrl.GetDiscription());
 
             Thread.Sleep(1500);
+
+            AvoidFacebookMessage(driver);
 
             IWebElement visibilityOfPublications = HtmlHelper.GetElementByCssSelector(driver, ".fbSettingsListItemContent.fcg");
             if (visibilityOfPublications.Displayed)

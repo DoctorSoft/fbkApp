@@ -55,6 +55,8 @@ namespace Engines.Engines.RegistrationEngine
                         ErrorText = GetErrorText(driver)
                     };
                 }
+
+                AvoidFacebookMessage(driver);
             }
             catch (Exception ex)
             {

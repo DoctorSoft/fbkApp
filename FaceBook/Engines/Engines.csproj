@@ -51,11 +51,13 @@
   <ItemGroup>
     <Compile Include="Engines\GetIpEngine\GetIpEngine.cs" />
     <Compile Include="Engines\GetIpEngine\GetIpModel.cs" />
+    <Compile Include="Engines\LoadUserAvatar\LoadUserAvatarEngine.cs" />
+    <Compile Include="Engines\LoadUserAvatar\LoadUserAvatarModel.cs" />
     <Compile Include="EnumExtensions\SettingsUrlExtension.cs" />
     <Compile Include="Enums\SettingsUrl.cs" />
     <Compile Include="Engines\AbstractEngine.cs" />
-    <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationEngine.cs" />
-    <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationModel.cs" />
+    <Compile Include="Engines\ConformationRegistrationEngine\ConfirmationRegistrationEngine.cs" />
+    <Compile Include="Engines\ConformationRegistrationEngine\ConfirmationRegistrationModel.cs" />
     <Compile Include="Engines\IEngine.cs" />
     <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupEngine.cs" />
     <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupModel.cs" />

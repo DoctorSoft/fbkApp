@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
+using Helpers.HtmlHelpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
 namespace Engines.Engines
@@ -33,6 +36,26 @@ namespace Engines.Engines
             Thread.Sleep(800);
 
             return true;
+        }
+
+        protected void AvoidFacebookMessage(RemoteWebDriver driver)
+        {
+            Thread.Sleep(500);
+
+            SendKeys.SendWait("{Tab}");
+            SendKeys.SendWait("{Enter}");
+
+            var okButton = driver.GetElementByClass("_2z1w");
+            ClickElement(okButton);
+        }
+
+        protected void ClickElement(IWebElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+            element.Click();
         }
     }
 }

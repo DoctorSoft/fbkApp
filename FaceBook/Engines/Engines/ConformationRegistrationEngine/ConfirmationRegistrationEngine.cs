@@ -6,9 +6,9 @@ using OpenQA.Selenium.Remote;
 
 namespace Engines.Engines.ConformationRegistrationEngine
 {
-    public class ConformationRegistrationEngine: AbstractEngine<ConformationRegistrationModel, VoidResult>
+    public class ConfirmationRegistrationEngine: AbstractEngine<ConfirmationRegistrationModel, VoidResult>
     {
-        protected override VoidResult ExecuteEngine(RemoteWebDriver driver, ConformationRegistrationModel model)
+        protected override VoidResult ExecuteEngine(RemoteWebDriver driver, ConfirmationRegistrationModel model)
         {
             NavigateToUrl(driver, "http://www.mail.ru");
 

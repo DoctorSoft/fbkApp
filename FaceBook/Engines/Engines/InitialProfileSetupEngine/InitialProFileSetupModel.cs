@@ -1,4 +1,4 @@
-﻿namespace Engines.Engines.InitialProfileSetup
+﻿namespace Engines.Engines.InitialProfileSetupEngine
 {
     public class InitialProfileSetupModel
     {

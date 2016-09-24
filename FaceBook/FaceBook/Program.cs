@@ -1,5 +1,8 @@
 ﻿using InputData.Implementation;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Remote;
 
 namespace FaceBook
 {
@@ -7,8 +10,11 @@ namespace FaceBook
     {
         public static void Main(string[] args)
         {
-            var driver = new ChromeDriver();
+            var driver =  new ChromeDriver();
+            
             var service = new FaceBookService();
+
+           // service.GetIpAddress(driver);
 
             var inpuDataProvider = new InputDataProvider("usersDB.xlsx");
 
@@ -16,5 +22,6 @@ namespace FaceBook
 
             service.Registration(driver, userList.usersData);
         }
+
     }
 }

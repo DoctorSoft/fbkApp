@@ -2,6 +2,7 @@
 using System.Threading;
 using ChangeExcel.Implementation;
 using Engines.Engines.ConformationRegistrationEngine;
+using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetup;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
@@ -57,6 +58,11 @@ namespace FaceBook
         {
             var inputData = inputDataProvider.GetInputData();
             return inputData;
+        }
+
+        public void GetIpAddress(RemoteWebDriver driver)
+        {
+            new GetIpEngine().Execute(driver, new GetIpModel());
         }
 
         public void InitialProfileSetup(RemoteWebDriver driver)

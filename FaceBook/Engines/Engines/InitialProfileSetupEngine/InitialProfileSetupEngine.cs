@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Engines.EnumExtensions;
 using Engines.Enums;
@@ -43,19 +46,41 @@ namespace Engines.Engines.InitialProfileSetup
 
             IWebElement visibilityToAll = HtmlHelper.GetElementByCssSelector(driver, "._54nh._4chm._48u0");
             ClickElement(visibilityToAll);
-
+            
 
             // disable chat
 
-            IWebElement chatOptionButton = HtmlHelper.GetElementById(driver, "._5vmb.button._p");
+            var chatDisable = HtmlHelper.GetElementByXPath(driver, "//*[@id='fbDockChatBuddylistNub']/a/span[2]");
+            if (!chatDisable.Text.Contains("Чат (Отключен)"))
+            {
+                IWebElement dd = HtmlHelper.GetElementByClass(driver, "_3ixn");
+                dd.Click();
 
-            chatOptionButton.Click();
-            
-            IWebElement disableChatButton = HtmlHelper.GetElementByClass(driver, "_54nh");
-            disableChatButton.Click();
+                IWebElement chatOptionButton = HtmlHelper.GetElementByCssSelector(driver, ".clearfix.rfloat._ohf");
+                chatOptionButton.Click();
 
+                Thread.Sleep(1500);
 
-            
+                IWebElement otherOptions = HtmlHelper.GetElementByCssSelector(driver,
+                    "[href*='/ajax/chat/privacy/settings_dialog.php'");
+                otherOptions.Click();
+
+                Thread.Sleep(1500);
+
+                IWebElement disableChatAllFriendsButtonId = HtmlHelper.GetElementByXPath(driver, "//*[@id='offline']");
+                disableChatAllFriendsButtonId.Click();
+
+                Thread.Sleep(1500);
+
+                IWebElement applyButton = HtmlHelper.GetElementByCssSelector(driver,
+                    "._42ft._42fu.layerConfirm.uiOverlayButton.selected._42g-._42gy");
+                applyButton.Click();
+
+                Thread.Sleep(1500);
+
+                IWebElement hideChat = HtmlHelper.GetElementByCssSelector(driver, ".titlebarLabel.clearfix");
+                hideChat.Click();
+            }
             return true;
             
         }

@@ -25,5 +25,9 @@ namespace Helpers.HtmlHelpers
         {
             return driver.FindElements(By.CssSelector(cssSelector)).FirstOrDefault();
         }
+        public static IWebElement GetElementByXPath(RemoteWebDriver driver, string xPath)
+        {
+            return driver.FindElements(By.XPath(xPath)).FirstOrDefault();
+        }
     }
 }

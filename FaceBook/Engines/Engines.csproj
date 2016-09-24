@@ -43,16 +43,22 @@
       <HintPath>..\packages\Selenium.WebDriver.2.53.1\lib\net40\WebDriver.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WebDriver.Support, Version=2.53.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.Support.2.53.1\lib\net40\WebDriver.Support.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engines\GetIpEngine\GetIpEngine.cs" />
+    <Compile Include="Engines\GetIpEngine\GetIpModel.cs" />
     <Compile Include="EnumExtensions\SettingsUrlExtension.cs" />
     <Compile Include="Enums\SettingsUrl.cs" />
     <Compile Include="Engines\AbstractEngine.cs" />
     <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationEngine.cs" />
     <Compile Include="Engines\ConformationRegistrationEngine\ConformationRegistrationModel.cs" />
     <Compile Include="Engines\IEngine.cs" />
-    <Compile Include="Engines\InitialProfileSetup\InitialProfileSetupEngine.cs" />
-    <Compile Include="Engines\InitialProfileSetup\InitialProfileSetupModel.cs" />
+    <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupEngine.cs" />
+    <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupModel.cs" />
     <Compile Include="Engines\Models\ErrorModel.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationEngine.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationModel.cs" />

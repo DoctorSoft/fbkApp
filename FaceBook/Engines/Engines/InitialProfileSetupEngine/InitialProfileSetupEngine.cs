@@ -14,25 +14,29 @@ namespace Engines.Engines.InitialProfileSetupEngine
         {
             SetPrivacyOptions(driver);
 
+            DisableChat(driver);
+
+            DisableVideocalls(driver);
+
             return new VoidResult();
         }
-        private bool SetPrivacyOptions(RemoteWebDriver driver)
+
+        private void SetPrivacyOptions(RemoteWebDriver driver)
         {
             // set privacy
 
             NavigateToUrl(driver, SettingsUrl.PrivacyUrl.GetDiscription());
-
-            IWebElement dd = HtmlHelper.GetElementByClass(driver, "_3ixn");
-
+            
             Thread.Sleep(1500);
 
             AvoidFacebookMessage(driver);
 
-            IWebElement visibilityOfPublications = HtmlHelper.GetElementByCssSelector(driver, ".fbSettingsListItemContent.fcg");
+            Thread.Sleep(1500);
+
+            IWebElement visibilityOfPublications = HtmlHelper.GetElementByCssSelector(driver,
+                ".fbSettingsListItemContent.fcg");
             if (visibilityOfPublications.Displayed)
             {
-                dd.Click();
-
                 ClickElement(visibilityOfPublications);
             }
 
@@ -45,9 +49,14 @@ namespace Engines.Engines.InitialProfileSetupEngine
 
             IWebElement visibilityToAll = HtmlHelper.GetElementByCssSelector(driver, "._54nh._4chm._48u0");
             ClickElement(visibilityToAll);
-            
 
+        }
+
+        private void DisableChat(RemoteWebDriver driver)
+        {
             // disable chat
+
+            Thread.Sleep(2000);
 
             var chatDisable = HtmlHelper.GetElementByXPath(driver, "//*[@id='fbDockChatBuddylistNub']/a/span[2]");
             if (!chatDisable.Text.Contains("Чат (Отключен)"))
@@ -68,25 +77,37 @@ namespace Engines.Engines.InitialProfileSetupEngine
 
                 Thread.Sleep(1500);
 
-                IWebElement applyButton = HtmlHelper.GetElementByCssSelector(driver, "._42ft._42fu.layerConfirm.uiOverlayButton.selected._42g-._42gy");
+                IWebElement applyButton = HtmlHelper.GetElementByCssSelector(driver,
+                    "._42ft._42fu.layerConfirm.uiOverlayButton.selected._42g-._42gy");
                 applyButton.Click();
 
                 Thread.Sleep(1500);
 
-                IWebElement hideChat = HtmlHelper.GetElementByCssSelector(driver, ".titlebarLabel.clearfix");
-                hideChat.Click();
+                //IWebElement hideChat = HtmlHelper.GetElementByCssSelector(driver, ".titlebarLabel.clearfix");
+                //hideChat.Click();
             }
-            
+        }
+
+        private void DisableVideocalls(RemoteWebDriver driver)
+        {
             //disable video call
 
-            IWebElement videoChatOptionButton = HtmlHelper.GetElementByXPath(driver, "//*[@id='fbDockChatBuddylistNub']/a/div[1]");
-            if (!videoChatOptionButton.Text.Contains("Включить голосовые и видеовызовы"))
+            Thread.Sleep(2500);
+
+            //IWebElement videoChatOptionButton = HtmlHelper.GetElementByXPath(driver,
+            //   "//*[@id='fbDockChatBuddylistNub']/a/div[1]");
+
+            //videoChatOptionButton.Click();
+
+            IWebElement chatOptionButton = HtmlHelper.GetElementByCssSelector(driver, ".clearfix.rfloat._ohf");
+            chatOptionButton.Click();
+
+            Thread.Sleep(2000);
+
+            IWebElement disableVideoChatOptionButtonChild = driver.FindElement(By.CssSelector("[href*='videocall']"));
+
+            if (!disableVideoChatOptionButtonChild.Text.Contains("Включить голосовые и видеовызовы"))
             {
-                videoChatOptionButton.Click();
-
-                Thread.Sleep(2000);
-
-                IWebElement disableVideoChatOptionButtonChild = driver.FindElement(By.CssSelector("[href*='videocall']"));
                 if (disableVideoChatOptionButtonChild.Text.Contains("Отключить голосовые и видеовызовы"))
                 {
                     disableVideoChatOptionButtonChild.Click();
@@ -100,7 +121,9 @@ namespace Engines.Engines.InitialProfileSetupEngine
                 Thread.Sleep(1500);
 
                 var yetIWillNotIncludeButtons = driver.FindElements(By.ClassName("uiInputLabelLabel"));
-                IWebElement yetIWillNotInclude = yetIWillNotIncludeButtons.FirstOrDefault(yetIWillNotIncludeButton => yetIWillNotIncludeButton.Text.Contains("Пока я не включу"));
+                IWebElement yetIWillNotInclude =
+                    yetIWillNotIncludeButtons.FirstOrDefault(
+                        yetIWillNotIncludeButton => yetIWillNotIncludeButton.Text.Contains("Пока я не включу"));
                 ClickElement(yetIWillNotInclude);
 
                 Thread.Sleep(1500);
@@ -109,17 +132,7 @@ namespace Engines.Engines.InitialProfileSetupEngine
                     "._42ft._4jy0.layerConfirm.uiOverlayButton._4jy3._4jy1.selected._51sy");
                 applyDisableVideoButton.Click();
             }
-            return true;
-            
-        }
-
-        private void ClickElement(IWebElement element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-            element.Click();
         }
     }
 }
+

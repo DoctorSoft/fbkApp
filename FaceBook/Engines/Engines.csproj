@@ -51,8 +51,8 @@
   <ItemGroup>
     <Compile Include="Engines\GetIpEngine\GetIpEngine.cs" />
     <Compile Include="Engines\GetIpEngine\GetIpModel.cs" />
-    <Compile Include="Engines\LoadUserAvatar\LoadUserAvatarEngine.cs" />
-    <Compile Include="Engines\LoadUserAvatar\LoadUserAvatarModel.cs" />
+    <Compile Include="Engines\LoadUserAvatarEngine\LoadUserAvatarEngine.cs" />
+    <Compile Include="Engines\LoadUserAvatarEngine\LoadUserAvatarModel.cs" />
     <Compile Include="EnumExtensions\SettingsUrlExtension.cs" />
     <Compile Include="Enums\SettingsUrl.cs" />
     <Compile Include="Engines\AbstractEngine.cs" />

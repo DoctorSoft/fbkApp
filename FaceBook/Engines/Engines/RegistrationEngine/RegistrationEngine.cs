@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using Constants;
@@ -40,13 +41,13 @@ namespace Engines.Engines.RegistrationEngine
                 AddTextInElement(confirmationEmailInput, model.Email);
                 AddTextInElement(passwordInput, model.FacebookPassword);
 
-                GetSelectElement(birthdayDay, model.Birthday.Day);
-                GetSelectElement(birthdayMonth, model.Birthday.Month);
-                GetSelectElement(birthdayYear, model.Birthday.Year);
+                HtmlHelper.GetSelectElement(birthdayDay, model.Birthday.Day);
+                HtmlHelper.GetSelectElement(birthdayMonth, model.Birthday.Month);
+                HtmlHelper.GetSelectElement(birthdayYear, model.Birthday.Year);
 
-                ClickElement(gender);
+                HtmlHelper.ClickElement(gender);
 
-                ClickElement(submitButton);
+                HtmlHelper.ClickElement(submitButton);
 
                 if (CheckErrors(driver))
                 {
@@ -75,36 +76,18 @@ namespace Engines.Engines.RegistrationEngine
             element.SendKeys(text);
         }
 
-        private void GetSelectElement(IWebElement selectElement, int value)
-        {
-            if (selectElement == null || value == 0)
-            {
-                return;
-            }
-            selectElement.FindElement(By.CssSelector("option[value='" + value + "']")).Click();
-        }
-
-        private void ClickElement(IWebElement element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-            element.Click();
-        }
-
         private bool GetLogOutStatus(RemoteWebDriver driver)
         {
-            IWebElement profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
+            var profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
             return profileOptionElement == null;
         }
 
         private void LogOut(RemoteWebDriver driver)
         {
             driver.Keyboard.SendKeys(Keys.Enter);
-            IWebElement profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
+            var profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
             ClickElement(profileOptionElement);
-            IWebElement logOutButton = HtmlHelper.GetElementByClass(driver, "_54ni navSubmenu __MenuItem");
+            var logOutButton = driver.GetElementByClass("_54ni navSubmenu __MenuItem");
             ClickElement(logOutButton);
         }
 
@@ -112,14 +95,14 @@ namespace Engines.Engines.RegistrationEngine
         {
             Thread.Sleep(2000);
             driver.Keyboard.SendKeys(Keys.Enter);
-            IWebElement errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
+            var errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
             return errorElement != null ? true : false;
         }
 
         private string GetErrorText(RemoteWebDriver driver)
         {
-            IWebElement errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
-            string textError = errorElement.Text;
+            var errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
+            var textError = errorElement.Text;
             return textError;
         }
     }

@@ -35,5 +35,24 @@ namespace Helpers.HtmlHelpers
         {
             return driver.FindElements(By.XPath(tagName)).FirstOrDefault();
         }
+
+        public static void ClickElement(IWebElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+            element.Click();
+        }
+
+        public static void GetSelectElement(IWebElement selectElement, int value)
+        {
+            if (selectElement == null || value == 0)
+            {
+                return;
+            }
+
+            ClickElement(selectElement.FindElement(By.CssSelector("option[value='" + value + "']")));
+        }
     }
 }

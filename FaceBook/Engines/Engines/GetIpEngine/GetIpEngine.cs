@@ -10,13 +10,7 @@ namespace Engines.Engines.GetIpEngine
     {
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, GetIpModel model)
         {
-            //driver.Navigate().GoToUrl("http://movses21:2V1G10W6Xy@5.101.64.137:34530/");
-            driver.Navigate().GoToUrl("http://stackoverflow.com/");
-
-            Thread.Sleep(1500);
-
             driver.Navigate().GoToUrl("https://2ip.ru/");
-       
 
             return new VoidResult();
         }

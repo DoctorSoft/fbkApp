@@ -41,12 +41,15 @@ namespace Engines.Engines
         protected void AvoidFacebookMessage(RemoteWebDriver driver)
         {
             Thread.Sleep(500);
+            var modalBackground = driver.GetElementByClass("_3ixn");
+            if (modalBackground != null)
+            {
+                SendKeys.SendWait("{Tab}");
+                SendKeys.SendWait("{Enter}");
 
-            SendKeys.SendWait("{Tab}");
-            SendKeys.SendWait("{Enter}");
-
-            var okButton = driver.GetElementByClass("_2z1w");
-            ClickElement(okButton);
+                var okButton = driver.GetElementByClass("_2z1w");
+                ClickElement(okButton);
+            }
         }
 
         protected void ClickElement(IWebElement element)

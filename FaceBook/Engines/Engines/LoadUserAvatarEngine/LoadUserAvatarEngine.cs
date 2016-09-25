@@ -2,13 +2,14 @@
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Engines.EnumExtensions;
-using Engines.Enums;
+using Constants;
+using Constants.EnumExtensions;
+using Engines.Engines.LoadUserAvatar;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
-namespace Engines.Engines.LoadUserAvatar
+namespace Engines.Engines.LoadUserAvatarEngine
 {
     public class LoadUserAvatarEngine : AbstractEngine<LoadUserAvatarModel, VoidResult>
     {

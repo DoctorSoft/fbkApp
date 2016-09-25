@@ -20,7 +20,7 @@ namespace FaceBook
 
             var userList = service.GetRegistrationUserData(inpuDataProvider);
 
-            service.Registration(driver, userList.usersData);
+            service.Registration(driver, userList.UsersData);
         }
 
     }

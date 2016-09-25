@@ -5,11 +5,12 @@ using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
 using Engines.Engines.LoadUserAvatar;
+using Engines.Engines.LoadUserAvatarEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
+using InputData.Implementation;
 using InputData.InputModels;
 using InputData.Interfaces;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
 namespace FaceBook
@@ -43,8 +44,8 @@ namespace FaceBook
                         EmailLogin = user.Email,
                         EmailPassword = user.EmailPassword,
                         FacebookPassword = user.FacebookPassword
-                    });*/
-
+                    });
+                    */
                     InitialProfileSetup(driver); //start setup service
                     LoadUserAvatar(driver);
                 }
@@ -70,7 +71,12 @@ namespace FaceBook
 
         public void InitialProfileSetup(RemoteWebDriver driver)
         {
-            new InitialProfileSetupEngine().Execute(driver, new InitialProfileSetupModel());
+            var settingsList = new GeneralProfileSettings().GetGeneralProfileSettings();
+
+            new InitialProfileSetupEngine().Execute(driver, new InitialProfileSetupModel
+            {
+                ProfileSettings = settingsList
+            });
         }
 
         public void LoadUserAvatar(RemoteWebDriver driver)

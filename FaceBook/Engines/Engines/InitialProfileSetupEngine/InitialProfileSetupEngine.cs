@@ -1,8 +1,9 @@
-﻿﻿using System.Threading;
+﻿using System;
+using System.Threading;
 ﻿using System.Linq;
-using Engines.EnumExtensions;
-using Engines.Enums;
-using Helpers.HtmlHelpers;
+﻿using Constants;
+﻿using Constants.EnumExtensions;
+﻿using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -17,6 +18,8 @@ namespace Engines.Engines.InitialProfileSetupEngine
             DisableChat(driver);
 
             DisableVideocalls(driver);
+            
+            SetTimelineOptions(driver, model);
 
             return new VoidResult();
         }
@@ -82,9 +85,6 @@ namespace Engines.Engines.InitialProfileSetupEngine
                 applyButton.Click();
 
                 Thread.Sleep(1500);
-
-                //IWebElement hideChat = HtmlHelper.GetElementByCssSelector(driver, ".titlebarLabel.clearfix");
-                //hideChat.Click();
             }
         }
 
@@ -93,30 +93,39 @@ namespace Engines.Engines.InitialProfileSetupEngine
             //disable video call
 
             Thread.Sleep(2500);
-
-            //IWebElement videoChatOptionButton = HtmlHelper.GetElementByXPath(driver,
-            //   "//*[@id='fbDockChatBuddylistNub']/a/div[1]");
-
-            //videoChatOptionButton.Click();
-
             IWebElement chatOptionButton = HtmlHelper.GetElementByCssSelector(driver, ".clearfix.rfloat._ohf");
+            if (chatOptionButton.Displayed == false)
+            {
+                chatOptionButton = HtmlHelper.GetElementByXPath(driver, "//*[@id='fbDockChatBuddylistNub']/a/div[1]/div");
+            }
             chatOptionButton.Click();
 
             Thread.Sleep(2000);
 
-            IWebElement disableVideoChatOptionButtonChild = driver.FindElement(By.CssSelector("[href*='videocall']"));
-
-            if (!disableVideoChatOptionButtonChild.Text.Contains("Включить голосовые и видеовызовы"))
+            IWebElement disableVideoChatOptionButton;
+            try
             {
-                if (disableVideoChatOptionButtonChild.Text.Contains("Отключить голосовые и видеовызовы"))
+                disableVideoChatOptionButton = driver.FindElement(By.CssSelector("[href*='videocall']"));
+            }
+            catch (Exception)
+            {
+                var disableVideoChatOptionButtons = driver.FindElements(By.CssSelector("._54nh"));
+                disableVideoChatOptionButton =
+                    disableVideoChatOptionButtons.FirstOrDefault(
+                        m => m.Text.Contains("Отключить голосовые и видеовызовы") || m.Text.Contains("Включить голосовые и видеовызовы"));
+            }
+
+            if (!disableVideoChatOptionButton.Text.Contains("Включить голосовые и видеовызовы"))
+            {
+                if (disableVideoChatOptionButton.Text.Contains("Отключить голосовые и видеовызовы"))
                 {
-                    disableVideoChatOptionButtonChild.Click();
+                    disableVideoChatOptionButton.Click();
                 }
                 else
                 {
-                    IWebElement disableVideoChatOptionButton =
-                        disableVideoChatOptionButtonChild.FindElement(By.XPath(".."));
-                    disableVideoChatOptionButton.Click();
+                    IWebElement disableVideoChatOptionPrev =
+                        disableVideoChatOptionButton.FindElement(By.XPath(".."));
+                    disableVideoChatOptionPrev.Click();
                 }
                 Thread.Sleep(1500);
 
@@ -131,6 +140,36 @@ namespace Engines.Engines.InitialProfileSetupEngine
                 IWebElement applyDisableVideoButton = HtmlHelper.GetElementByCssSelector(driver,
                     "._42ft._4jy0.layerConfirm.uiOverlayButton._4jy3._4jy1.selected._51sy");
                 applyDisableVideoButton.Click();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void SetTimelineOptions(RemoteWebDriver driver, InitialProfileSetupModel model)
+        {
+            AvoidFacebookMessage(driver);
+
+            foreach (var settings in model.ProfileSettings)
+            {
+                NavigateToUrl(driver, settings.Link.GetDiscription());
+
+                var currenrOptions = HtmlHelper.GetElementByCssSelector(driver, "._42ft._4jy0._55pi._5vto._55_p._2agf._p._4jy3._517h._51sy");
+                if (currenrOptions == null) currenrOptions = HtmlHelper.GetElementByCssSelector(driver, "._42ft._42fu._4-s1._2agf._p");
+                HtmlHelper.ClickElement(currenrOptions);
+
+                var userOptions = HtmlHelper.GetElementsByCssSelector(driver, "._54nc");
+                foreach (var userOption in userOptions)
+                {
+                    if (userOption.Text.Contains(settings.Answer.GetDiscription()))
+                    {
+                        HtmlHelper.ClickElement(userOption);
+                        break;
+                    }
+                }
+
+                Thread.Sleep(3000);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -24,6 +25,11 @@ namespace Helpers.HtmlHelpers
         public static IWebElement GetElementByCssSelector(this IWebDriver driver, string cssSelector)
         {
             return driver.FindElements(By.CssSelector(cssSelector)).FirstOrDefault();
+        }
+
+        public static IReadOnlyCollection<IWebElement> GetElementsByCssSelector(this IWebDriver driver, string cssSelector)
+        {
+            return driver.FindElements(By.CssSelector(cssSelector));
         }
 
         public static IWebElement GetElementByXPath(this IWebDriver driver, string xPath)

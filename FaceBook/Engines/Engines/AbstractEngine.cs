@@ -20,7 +20,7 @@ namespace Engines.Engines
             {
                 result = ExecuteEngine(driver, model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // todo: Log it
                 result = new TResult();

@@ -32,7 +32,7 @@ namespace InputData.Implementation
 
                 return new InputDataModel
                 {
-                    usersData = usersData
+                    UsersData = usersData
                 };
 
             }

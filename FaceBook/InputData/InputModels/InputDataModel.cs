@@ -5,6 +5,6 @@ namespace InputData.InputModels
 {
     public class InputDataModel
     {
-        public List<RegistrationModel> usersData { get; set; }
+        public List<RegistrationModel> UsersData { get; set; }
     }
 }

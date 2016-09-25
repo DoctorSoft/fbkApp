@@ -46,17 +46,19 @@
     <Compile Include="Constants\RowName.cs" />
     <Compile Include="Constants\SheetNumber.cs" />
     <Compile Include="Decorators\ExcelWorkBook.cs" />
+    <Compile Include="Implementation\GeneralProfileSettings.cs" />
     <Compile Include="Implementation\InputDataProvider.cs" />
     <Compile Include="Implementation\PasswordGenerator.cs" />
     <Compile Include="InputModels\InputDataModel.cs" />
+    <Compile Include="Interfaces\IGeneralProfileSettings.cs" />
     <Compile Include="Interfaces\IInputDataProvider.cs" />
     <Compile Include="Interfaces\IPasswordGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Constants\Constants.csproj">
+    <ProjectReference Include="..\Constants\Enums.csproj">
       <Project>{1608CBE8-91C8-4502-80D4-047DAEBD8689}</Project>
-      <Name>Constants</Name>
+      <Name>Enums</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engines\Engines.csproj">
       <Project>{43626146-B80F-40AC-813C-70D2075A6843}</Project>

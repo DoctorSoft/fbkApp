@@ -59,7 +59,7 @@ namespace Engines.Engines.RegistrationEngine
 
                 AvoidFacebookMessage(driver);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return null;

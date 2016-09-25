@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -39,16 +40,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
         private void LogOut(RemoteWebDriver driver)
         {
             IWebElement logOutButton = GetWebElementById(driver, "PH_logoutLink");
-            ClickElement(logOutButton);
-        }
-
-        private void ClickElement(IWebElement element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-            element.Click();
+            HtmlHelper.ClickElement(logOutButton);
         }
 
         private void AddTextInElement(IWebElement element, string text)
@@ -72,7 +64,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
             AddTextInElement(loginInput, login);
             AddTextInElement(passwordInput, password);
 
-            ClickElement(authButton);
+            HtmlHelper.ClickElement(authButton);
         }
 
         private void ConformatRegistration(RemoteWebDriver driver, string password)
@@ -86,7 +78,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
             {
                 if (letterTitle.Text.Contains("Последний этап регистрации на Facebook"))
                 {
-                    ClickElement(letterTitle);
+                    HtmlHelper.ClickElement(letterTitle);
 
                     Thread.Sleep(1500);
 
@@ -106,7 +98,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
             IWebElement applyButton = GetWebElementById(driver, "loginbutton");
             
             AddTextInElement(passwordTextBox, password);
-            ClickElement(applyButton);
+            HtmlHelper.ClickElement(applyButton);
         }
     }
 }

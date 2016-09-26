@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Constants;
 using Constants.EnumExtensions;
 using Engines.Engines.LoadUserAvatar;
+using Engines.Engines.Models;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;

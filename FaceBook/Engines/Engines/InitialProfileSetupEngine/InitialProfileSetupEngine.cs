@@ -3,7 +3,8 @@ using System.Threading;
 ﻿using System.Linq;
 ﻿using Constants;
 ﻿using Constants.EnumExtensions;
-﻿using Helpers.HtmlHelpers;
+using Engines.Engines.Models;
+using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -13,8 +14,6 @@ namespace Engines.Engines.InitialProfileSetupEngine
     {
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, InitialProfileSetupModel model)
         {
-            SetPrivacyOptions(driver);
-
             DisableChat(driver);
 
             DisableVideocalls(driver);
@@ -22,37 +21,6 @@ namespace Engines.Engines.InitialProfileSetupEngine
             SetTimelineOptions(driver, model);
 
             return new VoidResult();
-        }
-
-        private void SetPrivacyOptions(RemoteWebDriver driver)
-        {
-            // set privacy
-
-            NavigateToUrl(driver, SettingsUrl.PrivacyUrl.GetDiscription());
-            
-            Thread.Sleep(1500);
-
-            AvoidFacebookMessage(driver);
-
-            Thread.Sleep(1500);
-
-            IWebElement visibilityOfPublications = HtmlHelper.GetElementByCssSelector(driver,
-                ".fbSettingsListItemContent.fcg");
-            if (visibilityOfPublications.Displayed)
-            {
-                ClickElement(visibilityOfPublications);
-            }
-
-            Thread.Sleep(500);
-
-            IWebElement visibilityOfPublicationsDropDownList = HtmlHelper.GetElementByClass(driver, "_55pe");
-            ClickElement(visibilityOfPublicationsDropDownList);
-
-            Thread.Sleep(500);
-
-            IWebElement visibilityToAll = HtmlHelper.GetElementByCssSelector(driver, "._54nh._4chm._48u0");
-            ClickElement(visibilityToAll);
-
         }
 
         private void DisableChat(RemoteWebDriver driver)

@@ -87,6 +87,10 @@
       <Project>{43626146-B80F-40AC-813C-70D2075A6843}</Project>
       <Name>Engines</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{393c9334-dc16-460b-aa72-cf1f0dbea7b3}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InputData\InputData.csproj">
       <Project>{79E38E49-EDD0-464F-BE38-6AC042F9251E}</Project>
       <Name>InputData</Name>

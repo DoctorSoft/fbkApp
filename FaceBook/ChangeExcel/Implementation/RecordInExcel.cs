@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using ChangeExcel.Interfaces;
 using Engines.Engines.RegistrationEngine;
 using InputData.Constants;
 using InputData.Decorators;
-using InputData.Implementation;
-using InputData.InputModels;
 using Excel = Microsoft.Office.Interop.Excel;
 using Engines.Engines.Models;
 
@@ -21,7 +17,7 @@ namespace ChangeExcel.Implementation
             this.fileName = fileName;
         }
 
-        public bool RecordRegistratedStatus(RegistrationModel model, ErrorModel error)
+        public bool RecordRegistratedData(RegistrationModel model, ErrorModel errors)
         {
 
             var currentDirectory = Directory.GetCurrentDirectory();
@@ -30,7 +26,7 @@ namespace ChangeExcel.Implementation
             using (var workBook = new ExcelWorkBook(path))
             {
                 var usersDataSheet = (Excel.Worksheet)workBook.Worksheets.Item[(int)SheetNumber.UserData];
-                var recordingStatus = RecordStatus(usersDataSheet, model.Id, error);
+                var recordingStatus = RecordData(usersDataSheet, model, errors);
 
                 workBook.Save();
 
@@ -38,12 +34,7 @@ namespace ChangeExcel.Implementation
             }
         }
 
-        public bool RecordUserUserHomeLink(RegistrationModel model, string link)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool RecordStatus(Excel.Worksheet worksheet, int userId, ErrorModel errors)
+        public bool RecordData(Excel.Worksheet worksheet, RegistrationModel model, ErrorModel errors)
         {
             var range = worksheet.UsedRange;
             var statusRegistration = GetStatus(errors);
@@ -53,11 +44,12 @@ namespace ChangeExcel.Implementation
             for (var rowIndex = (int)RowName.StartData; rowIndex <= rowCount; rowIndex++)
             {
                 var id = (worksheet.Cells[rowIndex, (int)ColumnName.Id] as Excel.Range).Value;
-                if ((id == null) || (id != userId))
+                if ((id == null) || (id != model.Id))
                 {
                     continue;
                 }
                 (worksheet.Cells[rowIndex, (int)ColumnName.RegistratedStatus] as Excel.Range).Value = statusRegistration;
+                (worksheet.Cells[rowIndex, (int)ColumnName.HomePageUrl] as Excel.Range).Value = model.HomepageUrl;
                 if (!statusRegistration) (worksheet.Cells[rowIndex, (int)ColumnName.TextError] as Excel.Range).Value = errors.ErrorText;
                 break;
             }

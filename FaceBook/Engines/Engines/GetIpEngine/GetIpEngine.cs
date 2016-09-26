@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading;
-using OpenQA.Selenium;
+﻿using Engines.Engines.Models;
 using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.UI;
 
 namespace Engines.Engines.GetIpEngine
 {

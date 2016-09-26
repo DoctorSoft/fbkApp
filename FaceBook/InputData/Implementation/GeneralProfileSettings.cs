@@ -40,6 +40,12 @@ namespace InputData.Implementation
                     Name = "ChroniclesAndLabelsSuggestion",
                     Link = SettingsUrl.ChroniclesAndLabelsSuggestion,
                     Answer = OptionAnswers.Nobody
+                },
+                new GeneralProfileSettingsModel
+                {
+                    Name = "PrivacyComposer",
+                    Link = SettingsUrl.PrivacyComposeryUrl,
+                    Answer = OptionAnswers.All
                 }
             };
 

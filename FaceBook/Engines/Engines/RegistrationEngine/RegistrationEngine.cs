@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Constants;
 using Engines.Engines.Models;
+using Helpers.FacebookHelpers;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
@@ -18,7 +19,7 @@ namespace Engines.Engines.RegistrationEngine
             NavigateToUrl(driver);
             try
             {
-                if (!GetLogOutStatus(driver))
+                if (FacebookHelper.GetLogOutStatus(driver))
                 {
                     LogOut(driver);
                 }
@@ -74,12 +75,6 @@ namespace Engines.Engines.RegistrationEngine
 
             element.Clear();
             element.SendKeys(text);
-        }
-
-        private bool GetLogOutStatus(RemoteWebDriver driver)
-        {
-            var profileOptionElement = HtmlHelper.GetElementById(driver, "userNavigationLabel");
-            return profileOptionElement == null;
         }
 
         private void LogOut(RemoteWebDriver driver)

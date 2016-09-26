@@ -8,6 +8,7 @@ using Engines.Engines.LoadUserAvatar;
 using Engines.Engines.LoadUserAvatarEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
+using Helpers.FacebookHelpers;
 using InputData.Implementation;
 using InputData.InputModels;
 using InputData.Interfaces;
@@ -33,25 +34,28 @@ namespace FaceBook
                         Gender = user.Gender
                     });
 
-                if (statusRegistration == null)
+                if (statusRegistration != null)
                 {
-                    /*new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, statusRegistration);
-
-                    Thread.Sleep(1500);
-                    new ConfirmationRegistrationEngine().Execute(driver,
-                    new ConfirmationRegistrationModel
-                    {
-                        EmailLogin = user.Email,
-                        EmailPassword = user.EmailPassword,
-                        FacebookPassword = user.FacebookPassword
-                    });
-                    */
-                    InitialProfileSetup(driver); //start setup service
-                    LoadUserAvatar(driver);
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
                 }
                 else
                 {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedStatus(user, statusRegistration);
+                    user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+
+                    Thread.Sleep(1500);
+                    new ConfirmationRegistrationEngine().Execute(driver,
+                        new ConfirmationRegistrationModel
+                        {
+                            EmailLogin = user.Email,
+                            EmailPassword = user.EmailPassword,
+                            FacebookPassword = user.FacebookPassword
+                        });
+
+                    InitialProfileSetup(driver); //start setup service
+                    LoadUserAvatar(driver);
+
                 }
 
                 Thread.Sleep(2000);

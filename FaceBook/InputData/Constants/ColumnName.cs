@@ -11,6 +11,7 @@
         Birthday = 7,
         Gender = 8,
         RegistratedStatus = 9,
-        TextError = 10
+        TextError = 10,
+        HomePageUrl = 11
     }
 }

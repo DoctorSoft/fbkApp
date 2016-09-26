@@ -5,8 +5,6 @@ namespace ChangeExcel.Interfaces
 {
     public interface IRecordInExcel
     {
-        bool RecordRegistratedStatus(RegistrationModel model, ErrorModel errors);
-
-        bool RecordUserUserHomeLink(RegistrationModel model, string link);
+        bool RecordRegistratedData(RegistrationModel model, ErrorModel errors);
     }
 }

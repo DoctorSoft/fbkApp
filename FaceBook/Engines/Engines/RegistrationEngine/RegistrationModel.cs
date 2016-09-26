@@ -20,5 +20,7 @@ namespace Engines.Engines.RegistrationEngine
         public DateTime Birthday { get; set; }
 
         public Gender Gender { get; set; }
+
+        public string HomepageUrl { get; set; }
     }
 }

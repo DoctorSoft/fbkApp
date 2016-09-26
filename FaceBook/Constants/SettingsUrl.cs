@@ -7,6 +7,9 @@ namespace Constants
         [Description("https://www.facebook.com/settings?tab=privacy")]
         PrivacyUrl,
 
+        [Description("https://www.facebook.com/settings?tab=privacy&section=composer&view")]
+        PrivacyComposeryUrl,
+
         [Description("https://www.facebook.com/settings?tab=timeline")]
         ChroniclesAndLabels,
 
@@ -24,6 +27,7 @@ namespace Constants
 
         [Description("https://www.facebook.com/settings?tab=timeline&section=suggestions&view")]
         ChroniclesAndLabelsSuggestion
+
 
     }
 }

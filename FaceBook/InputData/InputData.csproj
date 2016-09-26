@@ -50,6 +50,7 @@
     <Compile Include="Implementation\InputDataProvider.cs" />
     <Compile Include="Implementation\PasswordGenerator.cs" />
     <Compile Include="InputModels\InputDataModel.cs" />
+    <Compile Include="InputModels\ProxyData.cs" />
     <Compile Include="Interfaces\IGeneralProfileSettings.cs" />
     <Compile Include="Interfaces\IInputDataProvider.cs" />
     <Compile Include="Interfaces\IPasswordGenerator.cs" />

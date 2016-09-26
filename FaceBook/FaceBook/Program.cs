@@ -1,26 +1,28 @@
+﻿using System.Linq;
 ﻿using InputData.Implementation;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Remote;
+﻿using FaceBook.Constants;
+﻿using FaceBook.Implementation;
+﻿using FaceBook.Interfaces;
 
 namespace FaceBook
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
-            var driver =  new ChromeDriver();
-            
-            var service = new FaceBookService();
+            var proxyData = ProxyConstants.GetMockProxyData();
+            IWebDriverFactory webDriverFactory = new ChromeWebDriverFactory();
+            var driver = webDriverFactory.GetDriver(proxyData);
 
-           // service.GetIpAddress(driver);
+            var service = new FaceBookService();
 
             var inpuDataProvider = new InputDataProvider("usersDB.xlsx");
 
             var userList = service.GetRegistrationUserData(inpuDataProvider);
 
-            service.Registration(driver, userList.UsersData);
+            service.Registration(driver, userList.UsersData.FirstOrDefault());
+            //service.LoadUserAvatar(driver);
         }
 
     }

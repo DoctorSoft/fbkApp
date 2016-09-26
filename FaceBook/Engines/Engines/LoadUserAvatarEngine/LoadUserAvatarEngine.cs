@@ -45,6 +45,7 @@ namespace Engines.Engines.LoadUserAvatarEngine
             SendKeys.SendWait(rootDirectory);
             Thread.Sleep(500);
             SendKeys.SendWait(@"{Enter}");
+            Thread.Sleep(500);
             SendKeys.SendWait(fileName);
             Thread.Sleep(500);
             SendKeys.SendWait(@"{Enter}");

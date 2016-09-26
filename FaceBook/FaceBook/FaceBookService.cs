@@ -19,31 +19,29 @@ namespace FaceBook
 {
     public class FaceBookService: IFaceBookService
     {
-        public void Registration(RemoteWebDriver driver, List<RegistrationModel> userList)
+        public void Registration(RemoteWebDriver driver, RegistrationModel user)
         {
-            foreach (var user in userList)
+            var statusRegistration = new RegistrationEngine().Execute(driver,
+                new RegistrationModel
+                {
+                    LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    Email = user.Email,
+                    FacebookPassword = user.FacebookPassword,
+                    EmailPassword = user.EmailPassword,
+                    Birthday = user.Birthday,
+                    Gender = user.Gender
+                });
+
+            if (statusRegistration != null)
             {
-                var statusRegistration = new RegistrationEngine().Execute(driver,
-                    new RegistrationModel
-                    {
-                        LastName = user.LastName,
-                        FirstName = user.FirstName,
-                        Email = user.Email,
-                        FacebookPassword = user.FacebookPassword,
-                        EmailPassword = user.EmailPassword,
-                        Birthday = user.Birthday,
-                        Gender = user.Gender
-                    });
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
+            }
+            else
+            {
+                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-                if (statusRegistration != null)
-                {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
-                }
-                else
-                {
-                    user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
-
-                    /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
                     Thread.Sleep(1500);
                     new ConfirmationRegistrationEngine().Execute(driver,
@@ -57,16 +55,16 @@ namespace FaceBook
                     InitialProfileSetup(driver); //start setup service
                     LoadUserAvatar(driver);*/
 
-                    new FillingGeneralInformationEngine().Execute(driver, new FillingGeneralInformationModel
-                    {
-                        UserHomePageUrl = user.HomepageUrl
-                    });
+                new FillingGeneralInformationEngine().Execute(driver, new FillingGeneralInformationModel
+                {
+                    UserHomePageUrl = user.HomepageUrl
+                });
 
-                }
-
-                Thread.Sleep(2000);
             }
+
+            Thread.Sleep(2000);
         }
+
 
         public InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider)
         {

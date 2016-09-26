@@ -49,6 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engines\FillingGeneralInformationEngine\FillingGeneralInformationEngine.cs" />
+    <Compile Include="Engines\FillingGeneralInformationEngine\FillingGeneralInformationModel.cs" />
     <Compile Include="Engines\GetIpEngine\GetIpEngine.cs" />
     <Compile Include="Engines\GetIpEngine\GetIpModel.cs" />
     <Compile Include="Engines\Models\GeneralProfileSettingsModel.cs" />

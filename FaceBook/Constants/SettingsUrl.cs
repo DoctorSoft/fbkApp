@@ -26,8 +26,9 @@ namespace Constants
         ChroniclesAndLabelsExpansion,
 
         [Description("https://www.facebook.com/settings?tab=timeline&section=suggestions&view")]
-        ChroniclesAndLabelsSuggestion
+        ChroniclesAndLabelsSuggestion,
 
-
+        [Description("&sk=about&section=overview&pnref=about")]
+        OverviewOptionsPostfix
     }
 }

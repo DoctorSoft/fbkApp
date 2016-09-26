@@ -2,6 +2,7 @@
 using System.Threading;
 using ChangeExcel.Implementation;
 using Engines.Engines.ConformationRegistrationEngine;
+using Engines.Engines.FillingGeneralInformationEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
 using Engines.Engines.LoadUserAvatar;
@@ -42,7 +43,7 @@ namespace FaceBook
                 {
                     user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                    /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
                     Thread.Sleep(1500);
                     new ConfirmationRegistrationEngine().Execute(driver,
@@ -54,7 +55,12 @@ namespace FaceBook
                         });
 
                     InitialProfileSetup(driver); //start setup service
-                    LoadUserAvatar(driver);
+                    LoadUserAvatar(driver);*/
+
+                    new FillingGeneralInformationEngine().Execute(driver, new FillingGeneralInformationModel
+                    {
+                        UserHomePageUrl = user.HomepageUrl
+                    });
 
                 }
 

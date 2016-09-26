@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using ChangeExcel.Implementation;
 using Engines.Engines.ConformationRegistrationEngine;
@@ -42,6 +43,7 @@ namespace FaceBook
                 else
                 {
                     user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+                    user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
 
                     /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
@@ -57,11 +59,7 @@ namespace FaceBook
                     InitialProfileSetup(driver); //start setup service
                     LoadUserAvatar(driver);*/
 
-                    new FillingGeneralInformationEngine().Execute(driver, new FillingGeneralInformationModel
-                    {
-                        UserHomePageUrl = user.HomepageUrl
-                    });
-
+                    new FillingGeneralInformationEngine().Execute(driver, user.UserInfo);
                 }
 
                 Thread.Sleep(2000);

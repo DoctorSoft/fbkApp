@@ -28,7 +28,16 @@ namespace Constants
         [Description("https://www.facebook.com/settings?tab=timeline&section=suggestions&view")]
         ChroniclesAndLabelsSuggestion,
 
-        [Description("&sk=about&section=overview&pnref=about")]
-        OverviewOptionsPostfix
+        [Description("&sk=about&section=education&pnref=about")]
+        OverviewOptionsEducationPostfix,
+
+        [Description("&sk=about&section=living&pnref=aboutt")]
+        OverviewOptionsLivingnPostfix,
+
+        [Description("&sk=about&section=contact-info&pnref=about")]
+        OverviewOptionsContactInfoPostfix,
+
+        [Description("&sk=about&section=relationship&pnref=about")]
+        OverviewOptionsRelationshipPostfix
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Constants;
+using Engines.Engines.FillingGeneralInformationEngine;
 using Engines.Engines.RegistrationEngine;
 using InputData.Constants;
 using InputData.Decorators;
@@ -27,7 +28,10 @@ namespace InputData.Implementation
             using (var workBook = new ExcelWorkBook(path))
             {
                 var usersDataSheet = (Excel.Worksheet)workBook.Worksheets.Item[(int)SheetNumber.UserData];
-                var usersData = ParseUserDataSheet(usersDataSheet);
+                var usersInfoSheet = (Excel.Worksheet)workBook.Worksheets.Item[(int)SheetNumber.UserInfo];
+
+                var usersData = ParseUserDataSheet(usersDataSheet, usersInfoSheet);
+
                 workBook.Save();
 
                 return new InputDataModel
@@ -38,17 +42,17 @@ namespace InputData.Implementation
             }
         }
 
-        public List<RegistrationModel> ParseUserDataSheet(Excel.Worksheet worksheet)
+        public List<RegistrationModel> ParseUserDataSheet(Excel.Worksheet userDataSheet, Excel.Worksheet userInfoSheet)
         {
             var users = new List<RegistrationModel>();
             var passGenerator = new PasswordGenerator();
 
-            if (worksheet == null)
+            if (userDataSheet == null)
             {
                 return users;
             }
 
-            var range = worksheet.UsedRange;
+            var range = userDataSheet.UsedRange;
 
             if (range == null)
             {
@@ -59,23 +63,24 @@ namespace InputData.Implementation
 
             for (var rowIndex = (int)RowName.StartData; rowIndex <= rowCount; rowIndex++)
             {
-                var id = (worksheet.Cells[rowIndex, (int)ColumnName.Id] as Excel.Range).Value;
+                var id = (userDataSheet.Cells[rowIndex, (int)ColumnName.Id] as Excel.Range).Value;
                 if (id == null)
                 {
                     continue;
                 }
-                var lastName = (worksheet.Cells[rowIndex, (int)ColumnName.LastName] as Excel.Range).Value;
-                var firstName = (worksheet.Cells[rowIndex, (int)ColumnName.FirstName] as Excel.Range).Value;
-                var email = (worksheet.Cells[rowIndex, (int)ColumnName.Email] as Excel.Range).Value;
-                var birthday = (worksheet.Cells[rowIndex, (int)ColumnName.Birthday] as Excel.Range).Value;
-                var gender = (worksheet.Cells[rowIndex, (int)ColumnName.Gender] as Excel.Range).Value;
-                var facebookPassword = (worksheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value;
-                var emailPassword = (worksheet.Cells[rowIndex, (int)ColumnName.EmailPassword] as Excel.Range).Value;
+                var lastName = (userDataSheet.Cells[rowIndex, (int)ColumnName.LastName] as Excel.Range).Value;
+                var firstName = (userDataSheet.Cells[rowIndex, (int)ColumnName.FirstName] as Excel.Range).Value;
+                var email = (userDataSheet.Cells[rowIndex, (int)ColumnName.Email] as Excel.Range).Value;
+                var birthday = (userDataSheet.Cells[rowIndex, (int)ColumnName.Birthday] as Excel.Range).Value;
+                var gender = (userDataSheet.Cells[rowIndex, (int)ColumnName.Gender] as Excel.Range).Value;
+                var facebookPassword = (userDataSheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value;
+                var emailPassword = (userDataSheet.Cells[rowIndex, (int)ColumnName.EmailPassword] as Excel.Range).Value;
+                var userInfo = ParseUserInfoSheet(userInfoSheet, (int)id);
 
                 if (facebookPassword == null)
                 {
                     facebookPassword = passGenerator.Generate(8);
-                    (worksheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value = facebookPassword;
+                    (userDataSheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value = facebookPassword;
                 }
 
                 if (id == null || lastName == null || firstName == null || email == null || birthday == null || gender == null)
@@ -92,11 +97,63 @@ namespace InputData.Implementation
                     FacebookPassword = facebookPassword,
                     EmailPassword = emailPassword,
                     Birthday = Convert.ToDateTime(birthday),
-                    Gender = gender == 1 ? Gender.Female : Gender.Male
+                    Gender = gender == 1 ? Gender.Female : Gender.Male,
+                    UserInfo = userInfo
                 });
             }
 
             return users;
+        }
+
+        public FillingGeneralInformationModel ParseUserInfoSheet(Excel.Worksheet userInfoSheet, int userId)
+        {
+            FillingGeneralInformationModel userInfo = null;
+
+            var range = userInfoSheet.UsedRange;
+
+            if (range == null)
+            {
+                return null;
+            }
+
+            var rowCount = range.Rows.Count;
+
+            for (var rowIndex = (int)RowName.StartData; rowIndex <= rowCount; rowIndex++)
+            {
+                var id = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Id] as Excel.Range).Value;
+                if ((id != null) && (id == userId))
+                {
+                    var company = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Company] as Excel.Range).Value;
+                    var cityWork = (userInfoSheet.Cells[rowIndex, (int)ColumnName.CityWork] as Excel.Range).Value;
+                    var descriptionWork = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionWork] as Excel.Range).Value;
+                    var post = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Post] as Excel.Range).Value;
+                    var univercity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Univercity] as Excel.Range).Value;
+                    var descriptionUnivercity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionUnivercity] as Excel.Range).Value;
+                    var skills = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Skills] as Excel.Range).Value;
+                    var specializations = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Specializations] as Excel.Range).Value;
+                    var school = (userInfoSheet.Cells[rowIndex, (int)ColumnName.School] as Excel.Range).Value;
+                    var descriptionSchool = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionSchool] as Excel.Range).Value;
+
+                    userInfo = new FillingGeneralInformationModel
+                    {
+                        Id = (int)id,
+                        Company = company,
+                        CityWork = cityWork,
+                        DescriptionWork = descriptionWork,
+                        Post = post,
+                        Univercity = univercity,
+                        DescriptionUnivercity = descriptionUnivercity,
+                        Skills = skills,
+                        Specializations = specializations,
+                        School = school,
+                        DescriptionSchool = descriptionSchool
+                    };
+
+                    break;
+                }
+            }
+
+            return userInfo;
         }
     }
 }

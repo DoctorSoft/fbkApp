@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Constants;
+using Engines.Engines.FillingGeneralInformationEngine;
 
 namespace Engines.Engines.RegistrationEngine
 {
@@ -22,5 +24,7 @@ namespace Engines.Engines.RegistrationEngine
         public Gender Gender { get; set; }
 
         public string HomepageUrl { get; set; }
+
+        public FillingGeneralInformationModel UserInfo { get; set; } 
     }
 }

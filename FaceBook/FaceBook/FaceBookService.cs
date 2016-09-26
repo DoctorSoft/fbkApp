@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using ChangeExcel.Implementation;
-using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.FillingGeneralInformationEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
@@ -33,6 +31,9 @@ namespace FaceBook
                     Gender = user.Gender
                 });
 
+                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+                user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
+
             if (statusRegistration != null)
             {
                 new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
@@ -55,10 +56,7 @@ namespace FaceBook
                     InitialProfileSetup(driver); //start setup service
                     LoadUserAvatar(driver);*/
 
-                new FillingGeneralInformationEngine().Execute(driver, new FillingGeneralInformationModel
-                {
-                    UserHomePageUrl = user.HomepageUrl
-                });
+                new FillingGeneralInformationEngine().Execute(driver, user.UserInfo);
 
             }
 

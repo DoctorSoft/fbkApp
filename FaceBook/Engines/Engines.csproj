@@ -49,6 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engines\AuthorizationEngine\AuthorizationEngine.cs" />
+    <Compile Include="Engines\AuthorizationEngine\AuthorizationModel.cs" />
     <Compile Include="Engines\FillingGeneralInformationEngine\FillingGeneralInformationEngine.cs" />
     <Compile Include="Engines\FillingGeneralInformationEngine\FillingGeneralInformationModel.cs" />
     <Compile Include="Engines\GetIpEngine\GetIpEngine.cs" />

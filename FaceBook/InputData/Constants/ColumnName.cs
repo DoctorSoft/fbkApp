@@ -22,6 +22,9 @@
         TextError = 10,
         School = 10,
         HomePageUrl = 11,
-        DescriptionSchool = 11
+        DescriptionSchool = 11,
+        CurrentCity = 12,
+        NativeCity = 13,
+        FamilyStatus = 14,
     }
 }

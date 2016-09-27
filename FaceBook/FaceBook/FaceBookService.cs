@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using ChangeExcel.Implementation;
+using Engines.Engines.AuthorizationEngine;
 using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.FillingGeneralInformationEngine;
 using Engines.Engines.GetIpEngine;
@@ -22,8 +23,12 @@ namespace FaceBook
     {
         public void Registration(RemoteWebDriver driver, List<RegistrationModel> userList)
         {
+
+            //Authorize(driver, userList[0]);
+            
             foreach (var user in userList)
             {
+
                 var statusRegistration = new RegistrationEngine().Execute(driver,
                     new RegistrationModel
                     {
@@ -33,7 +38,8 @@ namespace FaceBook
                         FacebookPassword = user.FacebookPassword,
                         EmailPassword = user.EmailPassword,
                         Birthday = user.Birthday,
-                        Gender = user.Gender
+                        Gender = user.Gender,
+                        HomepageUrl = FacebookHelper.GetHomepageUrl(driver)
                     });
 
                 if (statusRegistration != null)
@@ -42,10 +48,7 @@ namespace FaceBook
                 }
                 else
                 {
-                    user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
-                    user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
-
-                    /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
                     Thread.Sleep(1500);
                     new ConfirmationRegistrationEngine().Execute(driver,
@@ -57,9 +60,8 @@ namespace FaceBook
                         });
 
                     InitialProfileSetup(driver); //start setup service
-                    LoadUserAvatar(driver);*/
-
                     new FillingGeneralInformationEngine().Execute(driver, user.UserInfo);
+                    LoadUserAvatar(driver);
                 }
 
                 Thread.Sleep(2000);
@@ -93,6 +95,20 @@ namespace FaceBook
             {
                 AvatarName = "d://incognito.jpg"
             });
+        }
+
+        public void Authorize(RemoteWebDriver driver, RegistrationModel model)
+        {
+            new AuthorizationEngine().Execute(driver, new AuthorizationModel
+            {
+                Login = model.Email,
+                Password = model.FacebookPassword
+            });
+        }
+
+        public void FillingGeneralInformation(RemoteWebDriver driver, FillingGeneralInformationModel model)
+        {
+            new FillingGeneralInformationEngine().Execute(driver, model);
         }
     }
 }

@@ -75,7 +75,10 @@ namespace InputData.Implementation
                 var gender = (userDataSheet.Cells[rowIndex, (int)ColumnName.Gender] as Excel.Range).Value;
                 var facebookPassword = (userDataSheet.Cells[rowIndex, (int)ColumnName.FacebookPassword] as Excel.Range).Value;
                 var emailPassword = (userDataSheet.Cells[rowIndex, (int)ColumnName.EmailPassword] as Excel.Range).Value;
+                var homePageUrl = (userDataSheet.Cells[rowIndex, (int)ColumnName.HomePageUrl] as Excel.Range).Value;
+                
                 var userInfo = ParseUserInfoSheet(userInfoSheet, (int)id);
+                userInfo.UserHomePageUrl = homePageUrl;
 
                 if (facebookPassword == null)
                 {
@@ -98,7 +101,8 @@ namespace InputData.Implementation
                     EmailPassword = emailPassword,
                     Birthday = Convert.ToDateTime(birthday),
                     Gender = gender == 1 ? Gender.Female : Gender.Male,
-                    UserInfo = userInfo
+                    UserInfo = userInfo,
+                    HomepageUrl = homePageUrl
                 });
             }
 
@@ -133,6 +137,9 @@ namespace InputData.Implementation
                     var specializations = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Specializations] as Excel.Range).Value;
                     var school = (userInfoSheet.Cells[rowIndex, (int)ColumnName.School] as Excel.Range).Value;
                     var descriptionSchool = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionSchool] as Excel.Range).Value;
+                    var currentCity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.CurrentCity] as Excel.Range).Value;
+                    var nativeCity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.NativeCity] as Excel.Range).Value;
+                    var familyStatus = (userInfoSheet.Cells[rowIndex, (int)ColumnName.FamilyStatus] as Excel.Range).Value;
 
                     userInfo = new FillingGeneralInformationModel
                     {
@@ -146,7 +153,10 @@ namespace InputData.Implementation
                         Skills = skills,
                         Specializations = specializations,
                         School = school,
-                        DescriptionSchool = descriptionSchool
+                        DescriptionSchool = descriptionSchool,
+                        CurrentCity = currentCity,
+                        NativeCity = nativeCity,
+                        FamilyStatus = (int)familyStatus
                     };
 
                     break;

@@ -49,6 +49,10 @@ namespace Engines.Engines
 
                 var okButton = driver.GetElementByClass("_2z1w");
                 ClickElement(okButton);
+
+                Thread.Sleep(1500);
+
+                AvoidFacebookMessage(driver);
             }
         }
 

@@ -44,12 +44,13 @@ namespace ChangeExcel.Implementation
             for (var rowIndex = (int)RowName.StartData; rowIndex <= rowCount; rowIndex++)
             {
                 var id = (worksheet.Cells[rowIndex, (int)ColumnName.Id] as Excel.Range).Value;
+                var homePageUrl = (worksheet.Cells[rowIndex, (int) ColumnName.HomePageUrl] as Excel.Range).Value;
                 if ((id == null) || (id != model.Id))
                 {
                     continue;
                 }
                 (worksheet.Cells[rowIndex, (int)ColumnName.RegistratedStatus] as Excel.Range).Value = statusRegistration;
-                (worksheet.Cells[rowIndex, (int)ColumnName.HomePageUrl] as Excel.Range).Value = model.HomepageUrl;
+                if (homePageUrl == null) (worksheet.Cells[rowIndex, (int)ColumnName.HomePageUrl] as Excel.Range).Value = model.HomepageUrl;
                 if (!statusRegistration) (worksheet.Cells[rowIndex, (int)ColumnName.TextError] as Excel.Range).Value = errors.ErrorText;
                 break;
             }

@@ -25,5 +25,11 @@
         public string School { get; set; }
 
         public string DescriptionSchool { get; set; }
+
+        public string CurrentCity { get; set; }
+        
+        public string NativeCity { get; set; }
+
+        public int FamilyStatus { get; set; }
     }
 }

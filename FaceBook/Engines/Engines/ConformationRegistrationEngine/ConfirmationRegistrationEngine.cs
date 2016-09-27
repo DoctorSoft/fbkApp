@@ -83,7 +83,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
 
                     Thread.Sleep(1500);
 
-                    link = driver.FindElement(By.XPath("//*[@id='style_14743898780000000596_BODY']/table/tbody/tr/td/table/tbody/tr[5]/td[2]/table/tbody/tr[2]/td[1]/a/table/tbody/tr/td/a")).GetAttribute("href");
+                    link = driver.FindElements(By.TagName("a")).Where(m => m.GetAttribute("rel") == "noopener").FirstOrDefault(m => m.Text == "Не забудьте подтвердить свой аккаунт Facebook").GetAttribute("href");
                     break;
                 }
             }

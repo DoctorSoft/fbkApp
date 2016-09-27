@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 ﻿using System.Linq;
-﻿using Constants;
-﻿using Constants.EnumExtensions;
+using Constants.EnumExtensions;
 using Engines.Engines.Models;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;

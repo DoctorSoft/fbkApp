@@ -8,7 +8,7 @@ namespace FaceBook.Interfaces
 {
     public interface IFaceBookService
     {
-        void Registration(RemoteWebDriver driver, List<RegistrationModel> userList);
+        void Registration(RemoteWebDriver driver, RegistrationModel userModel);
 
         InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider);
     }

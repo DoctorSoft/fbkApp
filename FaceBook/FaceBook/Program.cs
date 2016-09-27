@@ -1,8 +1,9 @@
+﻿using System.Linq;
 ﻿using InputData.Implementation;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Remote;
+﻿using FaceBook.Constants;
+﻿using FaceBook.Implementation;
+﻿using FaceBook.Interfaces;
+using Serilog;
 
 namespace FaceBook
 {
@@ -10,17 +11,31 @@ namespace FaceBook
     {
         public static void Main(string[] args)
         {
-            var driver =  new ChromeDriver();
-            
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("facebook-logs.txt")
+                .CreateLogger();
+
+            var proxyData = ProxyConstants.GetMockProxyData();
+
+            Log.Information("Start connecting to proxy ({@ProxyData})", proxyData);
+            IWebDriverFactory webDriverFactory = new ChromeWebDriverFactory();
+            var driver = webDriverFactory.GetDriver(proxyData);
+
             var service = new FaceBookService();
 
-           // service.GetIpAddress(driver);
-
+            Log.Information("Connecting to file usersDB.xlsx");
             var inpuDataProvider = new InputDataProvider("usersDB.xlsx");
 
+            Log.Information("Getting users");
             var userList = service.GetRegistrationUserData(inpuDataProvider);
 
-            service.Registration(driver, userList.UsersData);
+            Log.Information("Registration");
+            service.Registration(driver, userList.UsersData.FirstOrDefault());
+
+            Log.Information("Loading avatar");
+            service.LoadUserAvatar(driver);
+
+            Log.Information("End application running");
         }
 
     }

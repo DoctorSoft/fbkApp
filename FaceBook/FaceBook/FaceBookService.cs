@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using ChangeExcel.Implementation;
-using Engines.Engines.AuthorizationEngine;
-using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.FillingGeneralInformationEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
@@ -21,34 +17,32 @@ namespace FaceBook
 {
     public class FaceBookService: IFaceBookService
     {
-        public void Registration(RemoteWebDriver driver, List<RegistrationModel> userList)
+        public void Registration(RemoteWebDriver driver, RegistrationModel user)
         {
+            var statusRegistration = new RegistrationEngine().Execute(driver,
+                new RegistrationModel
+                {
+                    LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    Email = user.Email,
+                    FacebookPassword = user.FacebookPassword,
+                    EmailPassword = user.EmailPassword,
+                    Birthday = user.Birthday,
+                    Gender = user.Gender
+                });
 
-            //Authorize(driver, userList[0]);
-            
-            foreach (var user in userList)
+                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+                user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
+
+            if (statusRegistration != null)
             {
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
+            }
+            else
+            {
+                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-                var statusRegistration = new RegistrationEngine().Execute(driver,
-                    new RegistrationModel
-                    {
-                        LastName = user.LastName,
-                        FirstName = user.FirstName,
-                        Email = user.Email,
-                        FacebookPassword = user.FacebookPassword,
-                        EmailPassword = user.EmailPassword,
-                        Birthday = user.Birthday,
-                        Gender = user.Gender,
-                        HomepageUrl = FacebookHelper.GetHomepageUrl(driver)
-                    });
-
-                if (statusRegistration != null)
-                {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
-                }
-                else
-                {
-                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
                     Thread.Sleep(1500);
                     new ConfirmationRegistrationEngine().Execute(driver,
@@ -60,13 +54,15 @@ namespace FaceBook
                         });
 
                     InitialProfileSetup(driver); //start setup service
-                    new FillingGeneralInformationEngine().Execute(driver, user.UserInfo);
-                    LoadUserAvatar(driver);
-                }
+                    LoadUserAvatar(driver);*/
 
-                Thread.Sleep(2000);
+                new FillingGeneralInformationEngine().Execute(driver, user.UserInfo);
+
             }
+
+            Thread.Sleep(2000);
         }
+
 
         public InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider)
         {
@@ -95,20 +91,6 @@ namespace FaceBook
             {
                 AvatarName = "d://incognito.jpg"
             });
-        }
-
-        public void Authorize(RemoteWebDriver driver, RegistrationModel model)
-        {
-            new AuthorizationEngine().Execute(driver, new AuthorizationModel
-            {
-                Login = model.Email,
-                Password = model.FacebookPassword
-            });
-        }
-
-        public void FillingGeneralInformation(RemoteWebDriver driver, FillingGeneralInformationModel model)
-        {
-            new FillingGeneralInformationEngine().Execute(driver, model);
         }
     }
 }

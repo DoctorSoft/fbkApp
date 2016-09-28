@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="Helpers" Label="Helpers" Category="Project" />
+    <Node Id="Selenium.WebDriver 2.53.1" Label="Selenium.WebDriver 2.53.1" Category="Package" />
+    <Node Id="Serilog 2.2.1" Label="Serilog 2.2.1" Category="Package" />
+    <Node Id="Serilog.Sinks.File 3.0.1" Label="Serilog.Sinks.File 3.0.1" Category="Package" />
+    <Node Id="Serilog.Sinks.RollingFile 3.0.1" Label="Serilog.Sinks.RollingFile 3.0.1" Category="Package" />
+    <Node Id="ChangeExcel" Label="ChangeExcel" Category="Project" />
+    <Node Id="Serilog 2.2.1" Label="Serilog 2.2.1" Category="Package" />
+    <Node Id="Serilog.Sinks.File 3.0.1" Label="Serilog.Sinks.File 3.0.1" Category="Package" />
+    <Node Id="Serilog.Sinks.RollingFile 3.0.1" Label="Serilog.Sinks.RollingFile 3.0.1" Category="Package" />
+    <Node Id="InputData" Label="InputData" Category="Project" />
+    <Node Id="Serilog 2.2.1" Label="Serilog 2.2.1" Category="Package" />
+    <Node Id="Serilog.Sinks.File 3.0.1" Label="Serilog.Sinks.File 3.0.1" Category="Package" />
+    <Node Id="Serilog.Sinks.RollingFile 3.0.1" Label="Serilog.Sinks.RollingFile 3.0.1" Category="Package" />
+    <Node Id="Engines" Label="Engines" Category="Project" />
+    <Node Id="Selenium.Support 2.53.1" Label="Selenium.Support 2.53.1" Category="Package" />
+    <Node Id="Selenium.WebDriver 2.53.1" Label="Selenium.WebDriver 2.53.1" Category="Package" />
+    <Node Id="Serilog 2.2.1" Label="Serilog 2.2.1" Category="Package" />
+    <Node Id="Serilog.Sinks.File 3.0.1" Label="Serilog.Sinks.File 3.0.1" Category="Package" />
+    <Node Id="Serilog.Sinks.RollingFile 3.0.1" Label="Serilog.Sinks.RollingFile 3.0.1" Category="Package" />
+    <Node Id="Enums" Label="Enums" Category="Project" />
+    <Node Id="Serilog 2.2.1" Label="Serilog 2.2.1" Category="Package" />
+    <Node Id="Serilog.Sinks.File 3.0.1" Label="Serilog.Sinks.File 3.0.1" Category="Package" />
+    <Node Id="Serilog.Sinks.RollingFile 3.0.1" Label="Serilog.Sinks.RollingFile 3.0.1" Category="Package" />
+    <Node Id="FaceBook" Label="FaceBook" Category="Project" />
+    <Node Id="LinqToPoml 1.0.0.3" Label="LinqToPoml 1.0.0.3" Category="Package" />
+    <Node Id="Microsoft.Bcl 1.1.10" Label="Microsoft.Bcl 1.1.10" Category="Package" />
+    <Node Id="Microsoft.Bcl.Build 1.0.14" Label="Microsoft.Bcl.Build 1.0.14" Category="Package" />
+    <Node Id="Microsoft.Net.Http 2.2.29" Label="Microsoft.Net.Http 2.2.29" Category="Package" />
+    <Node Id="Selenium.Chloride 1.0.0.8" Label="Selenium.Chloride 1.0.0.8" Category="Package" />
+    <Node Id="Selenium.Support 2.53.1" Label="Selenium.Support 2.53.1" Category="Package" />
+    <Node Id="Selenium.WebDriver 2.53.1" Label="Selenium.WebDriver 2.53.1" Category="Package" />
+    <Node Id="Serilog 2.2.1" Label="Serilog 2.2.1" Category="Package" />
+    <Node Id="Serilog.Sinks.File 3.0.1" Label="Serilog.Sinks.File 3.0.1" Category="Package" />
+    <Node Id="SpecBind 1.7.3.280" Label="SpecBind 1.7.3.280" Category="Package" />
+    <Node Id="SpecBind.Selenium 1.7.3.280" Label="SpecBind.Selenium 1.7.3.280" Category="Package" />
+    <Node Id="SpecBindGeneratorPlugin.SpecFlow 1.7.3.280" Label="SpecBindGeneratorPlugin.SpecFlow 1.7.3.280" Category="Package" />
+    <Node Id="SpecFlow 2.0.0" Label="SpecFlow 2.0.0" Category="Package" />
+    <Node Id="SpecFlow.CustomPlugin 2.0.0" Label="SpecFlow.CustomPlugin 2.0.0" Category="Package" />
+  </Nodes>
+  <Links>
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Helpers" Target="Selenium.WebDriver 2.53.1" Category="Installed Package" />
+    <Link Source="Helpers" Target="Serilog.Sinks.RollingFile 3.0.1" Category="Installed Package" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="ChangeExcel" Target="Serilog.Sinks.RollingFile 3.0.1" Category="Installed Package" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="InputData" Target="Serilog.Sinks.RollingFile 3.0.1" Category="Installed Package" />
+    <Link Source="Selenium.Support 2.53.1" Target="Selenium.WebDriver 2.53.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Engines" Target="Selenium.Support 2.53.1" Category="Installed Package" />
+    <Link Source="Engines" Target="Serilog.Sinks.RollingFile 3.0.1" Category="Installed Package" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.RollingFile 3.0.1" Target="Serilog.Sinks.File 3.0.1" Category="Package Dependency" />
+    <Link Source="Enums" Target="Serilog.Sinks.RollingFile 3.0.1" Category="Installed Package" />
+    <Link Source="Microsoft.Bcl 1.1.10" Target="Microsoft.Bcl.Build 1.0.14" Category="Package Dependency" />
+    <Link Source="Microsoft.Net.Http 2.2.29" Target="Microsoft.Bcl 1.1.10" Category="Package Dependency" />
+    <Link Source="Microsoft.Net.Http 2.2.29" Target="Microsoft.Bcl.Build 1.0.14" Category="Package Dependency" />
+    <Link Source="Selenium.Chloride 1.0.0.8" Target="LinqToPoml 1.0.0.3" Category="Package Dependency" />
+    <Link Source="Selenium.Chloride 1.0.0.8" Target="Selenium.WebDriver 2.53.1" Category="Package Dependency" />
+    <Link Source="Selenium.Chloride 1.0.0.8" Target="Selenium.Support 2.53.1" Category="Package Dependency" />
+    <Link Source="Selenium.Support 2.53.1" Target="Selenium.WebDriver 2.53.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="Serilog.Sinks.File 3.0.1" Target="Serilog 2.2.1" Category="Package Dependency" />
+    <Link Source="SpecBind 1.7.3.280" Target="SpecFlow 2.0.0" Category="Package Dependency" />
+    <Link Source="SpecBind.Selenium 1.7.3.280" Target="SpecBind 1.7.3.280" Category="Package Dependency" />
+    <Link Source="SpecBind.Selenium 1.7.3.280" Target="Selenium.WebDriver 2.53.1" Category="Package Dependency" />
+    <Link Source="SpecBind.Selenium 1.7.3.280" Target="Selenium.Support 2.53.1" Category="Package Dependency" />
+    <Link Source="SpecBind.Selenium 1.7.3.280" Target="SpecBindGeneratorPlugin.SpecFlow 1.7.3.280" Category="Package Dependency" />
+    <Link Source="SpecBindGeneratorPlugin.SpecFlow 1.7.3.280" Target="SpecFlow 2.0.0" Category="Package Dependency" />
+    <Link Source="SpecBindGeneratorPlugin.SpecFlow 1.7.3.280" Target="SpecFlow.CustomPlugin 2.0.0" Category="Package Dependency" />
+    <Link Source="SpecFlow.CustomPlugin 2.0.0" Target="SpecFlow 2.0.0" Category="Package Dependency" />
+    <Link Source="FaceBook" Target="Microsoft.Net.Http 2.2.29" Category="Installed Package" />
+    <Link Source="FaceBook" Target="Selenium.Chloride 1.0.0.8" Category="Installed Package" />
+    <Link Source="FaceBook" Target="Serilog.Sinks.File 3.0.1" Category="Installed Package" />
+    <Link Source="FaceBook" Target="SpecBind.Selenium 1.7.3.280" Category="Installed Package" />
+  </Links>
+  <Categories>
+    <Category Id="Project" />
+    <Category Id="Package" />
+  </Categories>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
+      <Condition Expression="HasCategory('Project')" />
+      <Setter Property="Background" Value="Blue" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Package Dependency" ValueLabel="True">
+      <Condition Expression="HasCategory('Package Dependency')" />
+      <Setter Property="Background" Value="Yellow" />
+    </Style>
+  </Styles>
+</DirectedGraph>

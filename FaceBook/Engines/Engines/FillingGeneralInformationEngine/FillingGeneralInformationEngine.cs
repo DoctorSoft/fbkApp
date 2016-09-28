@@ -7,6 +7,7 @@ using Engines.Engines.Models;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+//using Serilog;
 
 namespace Engines.Engines.FillingGeneralInformationEngine
 {
@@ -14,6 +15,9 @@ namespace Engines.Engines.FillingGeneralInformationEngine
     {
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
+
+            //Log.Logger = new LoggerConfiguration().WriteTo.File("facebook-logs.txt").CreateLogger();
+
             FillingWorkAndEducation(driver, model);
 
             FillingLiving(driver, model);
@@ -313,7 +317,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 HtmlHelper.ClickElement(linkFamilyStatus);
 
                 Thread.Sleep(2000);
-                var selectFamilyStatus = driver.GetElementByClass(".status");
+                var selectFamilyStatus = driver.GetElementByName("status");
 
                 if (selectFamilyStatus != null)
                 {

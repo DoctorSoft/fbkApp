@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Serilog">
+      <HintPath>..\packages\Serilog.2.2.1\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File">
+      <HintPath>..\packages\Serilog.Sinks.File.3.0.1\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -59,12 +65,14 @@
     <Compile Include="Engines\LoadUserAvatarEngine\LoadUserAvatarEngine.cs" />
     <Compile Include="Engines\LoadUserAvatarEngine\LoadUserAvatarModel.cs" />
     <Compile Include="Engines\AbstractEngine.cs" />
-    <Compile Include="Engines\ConformationRegistrationEngine\ConfirmationRegistrationEngine.cs" />
-    <Compile Include="Engines\ConformationRegistrationEngine\ConfirmationRegistrationModel.cs" />
+    <Compile Include="Engines\ConfirmationRegistrationEngine\ConfirmationRegistrationEngine.cs" />
+    <Compile Include="Engines\ConfirmationRegistrationEngine\ConfirmationRegistrationModel.cs" />
     <Compile Include="Engines\IEngine.cs" />
     <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupEngine.cs" />
     <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupModel.cs" />
     <Compile Include="Engines\Models\ErrorModel.cs" />
+    <Compile Include="Engines\ProfileConfirmationEngine\ProfileConfirmationEngine.cs" />
+    <Compile Include="Engines\ProfileConfirmationEngine\ProfileConfirmationModel.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationEngine.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationModel.cs" />
     <Compile Include="Engines\Models\VoidResult.cs" />
@@ -83,7 +91,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

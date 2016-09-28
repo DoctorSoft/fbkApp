@@ -7,6 +7,7 @@ using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
 using Engines.Engines.LoadUserAvatar;
 using Engines.Engines.LoadUserAvatarEngine;
+using Engines.Engines.ProfileConfirmationEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
 using Helpers.FacebookHelpers;
@@ -21,7 +22,7 @@ namespace FaceBook
     {
         public void Registration(RemoteWebDriver driver, RegistrationModel user)
         {
-            var statusRegistration = new RegistrationEngine().Execute(driver,
+            /*var statusRegistration = new RegistrationEngine().Execute(driver,
                 new RegistrationModel
                 {
                     LastName = user.LastName,
@@ -48,7 +49,7 @@ namespace FaceBook
 
                 Thread.Sleep(1500);
 
-                ConfirmaRegistration(driver, user); 
+                ConfirmRegistration(driver, user); 
 
                 InitialProfileSetup(driver);
 
@@ -58,6 +59,10 @@ namespace FaceBook
             }
 
             Thread.Sleep(2000);
+             */
+
+            Authorize(driver, user);
+            FillingGeneralInformation(driver, user);
         }
 
 
@@ -104,13 +109,22 @@ namespace FaceBook
             new FillingGeneralInformationEngine().Execute(driver, model.UserInfo);
         }
 
-        public void ConfirmaRegistration(RemoteWebDriver driver, RegistrationModel model)
+        public void ConfirmRegistration(RemoteWebDriver driver, RegistrationModel model)
         {
             new ConfirmationRegistrationEngine().Execute(driver, new ConfirmationRegistrationModel
             {
                 EmailLogin = model.Email,
                 EmailPassword = model.EmailPassword,
                 FacebookPassword = model.FacebookPassword
+            });
+        }
+
+        public void ProfileConfirm(RemoteWebDriver driver, RegistrationModel model)
+        {
+            new ProfileConfirmationEngine().Execute(driver, new ProfileConfirmationModel
+            {
+                Login = model.Email,
+                Password = model.FacebookPassword
             });
         }
     }

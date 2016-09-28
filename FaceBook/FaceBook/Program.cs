@@ -32,8 +32,8 @@ namespace FaceBook
             Log.Information("Registration");
             service.Registration(driver, userList.UsersData.FirstOrDefault());
 
-            Log.Information("Loading avatar");
-            service.LoadUserAvatar(driver);
+            //Log.Information("Loading avatar");
+            //service.LoadUserAvatar(driver);
 
             Log.Information("End application running");
         }

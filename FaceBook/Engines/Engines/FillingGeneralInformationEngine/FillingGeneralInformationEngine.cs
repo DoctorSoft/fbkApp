@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Constants;
@@ -20,9 +21,9 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             FillingWorkAndEducation(driver, model);
 
-            FillingLiving(driver, model);
+            //FillingLiving(driver, model);
 
-            FillingsRelationship(driver, model);
+            //FillingsRelationship(driver, model);
 
             return new VoidResult();
         }
@@ -36,11 +37,11 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             AvoidFacebookMessage(driver);
 
-            FillWorkSection(driver, model);
+            //FillWorkSection(driver, model);
             
             //FillSkillsSection(driver, model);
 
-            FillUniversutySection(driver, model);
+            //FillUniversutySection(driver, model);
 
             FillSchoolSection(driver, model);
         }
@@ -190,18 +191,28 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 HtmlHelper.ClickElement(result);
                 Thread.Sleep(500);
 
+
+                var city = HtmlHelper.GetElementByName(driver, "city");
+                if (city != null)
+                {
+                    city.SendKeys(model.UnivercityCity);
+                }
+
                 descriptionUnivercity.Clear();
                 descriptionUnivercity.SendKeys(model.DescriptionUnivercity);
                 Thread.Sleep(500);
 
                 specialization1.Clear();
                 specialization1.SendKeys(model.Specializations);
-                Thread.Sleep(500);
-                result = driver.FindElements(By.TagName("li")).FirstOrDefault(m => m.GetAttribute("class") == "page");
-                Thread.Sleep(500);
-                HtmlHelper.ClickElement(result);
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
 
+                result = driver.FindElements(By.TagName("li"))
+                    .FirstOrDefault(m => m.GetAttribute("class") == "page");
+                if (result != null && result.Displayed)
+                {
+                    HtmlHelper.ClickElement(result);
+                }
+                Thread.Sleep(500);
                 HtmlHelper.ClickElement(buttonUnivercityApply);
                 Thread.Sleep(1000);
             }
@@ -234,10 +245,17 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 HtmlHelper.ClickElement(result);
                 Thread.Sleep(500);
 
+                var city = HtmlHelper.GetElementByName(driver, "city");
+                if (city != null && city.Displayed)
+                {
+                    city.SendKeys(model.SchoolCity);
+                    result = driver.FindElements(By.TagName("li"))
+                    .FirstOrDefault(m => m.GetAttribute("class") == "page");
+                    HtmlHelper.ClickElement(result);
+                }
+
                 descriptionSchool.Clear();
                 descriptionSchool.SendKeys(model.DescriptionSchool);
-                Thread.Sleep(500);
-                result = driver.FindElements(By.TagName("li")).FirstOrDefault(m => m.GetAttribute("class") == "page");
                 Thread.Sleep(500);
                 HtmlHelper.ClickElement(result);
                 Thread.Sleep(500);

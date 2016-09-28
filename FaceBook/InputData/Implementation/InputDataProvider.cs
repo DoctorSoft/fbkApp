@@ -132,10 +132,12 @@ namespace InputData.Implementation
                     var descriptionWork = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionWork] as Excel.Range).Value;
                     var post = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Post] as Excel.Range).Value;
                     var univercity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Univercity] as Excel.Range).Value;
+                    var univercityCity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.CityUnivercity] as Excel.Range).Value;
                     var descriptionUnivercity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionUnivercity] as Excel.Range).Value;
                     var skills = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Skills] as Excel.Range).Value;
                     var specializations = (userInfoSheet.Cells[rowIndex, (int)ColumnName.Specializations] as Excel.Range).Value;
                     var school = (userInfoSheet.Cells[rowIndex, (int)ColumnName.School] as Excel.Range).Value;
+                    var schoolCity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.CitySchool] as Excel.Range).Value;
                     var descriptionSchool = (userInfoSheet.Cells[rowIndex, (int)ColumnName.DescriptionSchool] as Excel.Range).Value;
                     var currentCity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.CurrentCity] as Excel.Range).Value;
                     var nativeCity = (userInfoSheet.Cells[rowIndex, (int)ColumnName.NativeCity] as Excel.Range).Value;
@@ -149,14 +151,17 @@ namespace InputData.Implementation
                         DescriptionWork = descriptionWork,
                         Post = post,
                         Univercity = univercity,
+                        UnivercityCity = univercityCity,
                         DescriptionUnivercity = descriptionUnivercity,
                         Skills = skills,
                         Specializations = specializations,
                         School = school,
+                        SchoolCity = schoolCity,
                         DescriptionSchool = descriptionSchool,
                         CurrentCity = currentCity,
                         NativeCity = nativeCity,
-                        FamilyStatus = (int)familyStatus
+                        FamilyStatus = (int)familyStatus,
+
                     };
 
                     break;

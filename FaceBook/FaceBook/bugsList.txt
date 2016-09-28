@@ -1,0 +1,2 @@
+1) Не выбирается элемент из выпадающего списка поля "Специализация" (FillingGeneralInformationEngine - FillUniversutySection)
+2)

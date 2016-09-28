@@ -18,11 +18,15 @@
 
         public string Univercity { get; set; }
 
+        public string UnivercityCity { get; set; }
+
         public string DescriptionUnivercity { get; set; }
 
         public string Specializations { get; set; }
 
         public string School { get; set; }
+
+        public string SchoolCity { get; set; }
 
         public string DescriptionSchool { get; set; }
 

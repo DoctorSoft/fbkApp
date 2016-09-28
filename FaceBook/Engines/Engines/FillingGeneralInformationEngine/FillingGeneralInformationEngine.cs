@@ -19,9 +19,9 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             //Log.Logger = new LoggerConfiguration().WriteTo.File("facebook-logs.txt").CreateLogger();
 
-            FillingWorkAndEducation(driver, model);
+            //FillingWorkAndEducation(driver, model);
 
-            //FillingLiving(driver, model);
+            FillingLiving(driver, model);
 
             //FillingsRelationship(driver, model);
 
@@ -37,11 +37,11 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             AvoidFacebookMessage(driver);
 
-            //FillWorkSection(driver, model);
+            FillWorkSection(driver, model);
             
             //FillSkillsSection(driver, model);
 
-            //FillUniversutySection(driver, model);
+            FillUniversutySection(driver, model);
 
             FillSchoolSection(driver, model);
         }
@@ -283,7 +283,6 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 currentCity.SendKeys(model.CurrentCity);
 
                 Thread.Sleep(2000);
-
                 var result = driver.FindElements(By.TagName("li"))
                     .FirstOrDefault(m => m.GetAttribute("class") == "page");
                 Thread.Sleep(500);
@@ -313,9 +312,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
                 nativeCity.Clear();
                 nativeCity.SendKeys(model.NativeCity);
-                Thread.Sleep(500);
-                var result = driver.FindElements(By.TagName("li"))
-                    .FirstOrDefault(m => m.GetAttribute("class") == "page");
+                Thread.Sleep(2000);
+                var result = driver.FindElements(By.TagName("li")).FirstOrDefault(m => m.GetAttribute("class") == "page");
                 Thread.Sleep(500);
                 HtmlHelper.ClickElement(result);
                 Thread.Sleep(500);

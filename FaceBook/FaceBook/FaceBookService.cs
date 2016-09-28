@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using ChangeExcel.Implementation;
+using Engines.Engines.AuthorizationEngine;
+using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.FillingGeneralInformationEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
@@ -15,7 +17,7 @@ using OpenQA.Selenium.Remote;
 
 namespace FaceBook
 {
-    public class FaceBookService: IFaceBookService
+    public class FaceBookService : IFaceBookService
     {
         public void Registration(RemoteWebDriver driver, RegistrationModel user)
         {
@@ -31,8 +33,8 @@ namespace FaceBook
                     Gender = user.Gender
                 });
 
-                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
-                user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
+            user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+            user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
 
             if (statusRegistration != null)
             {
@@ -42,22 +44,17 @@ namespace FaceBook
             {
                 user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-                /*new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
-                    Thread.Sleep(1500);
-                    new ConfirmationRegistrationEngine().Execute(driver,
-                        new ConfirmationRegistrationModel
-                        {
-                            EmailLogin = user.Email,
-                            EmailPassword = user.EmailPassword,
-                            FacebookPassword = user.FacebookPassword
-                        });
+                Thread.Sleep(1500);
 
-                    InitialProfileSetup(driver); //start setup service
-                    LoadUserAvatar(driver);*/
+                ConfirmaRegistration(driver, user); 
 
-                new FillingGeneralInformationEngine().Execute(driver, user.UserInfo);
+                InitialProfileSetup(driver);
 
+                FillingGeneralInformation(driver, user);
+
+                LoadUserAvatar(driver);
             }
 
             Thread.Sleep(2000);
@@ -90,6 +87,30 @@ namespace FaceBook
             new LoadUserAvatarEngine().Execute(driver, new LoadUserAvatarModel
             {
                 AvatarName = "d://incognito.jpg"
+            });
+        }
+
+        public void Authorize(RemoteWebDriver driver, RegistrationModel model)
+        {
+            new AuthorizationEngine().Execute(driver, new AuthorizationModel
+            {
+                Login = model.Email,
+                Password = model.FacebookPassword
+            });
+        }
+
+        public void FillingGeneralInformation(RemoteWebDriver driver, RegistrationModel model)
+        {
+            new FillingGeneralInformationEngine().Execute(driver, model.UserInfo);
+        }
+
+        public void ConfirmaRegistration(RemoteWebDriver driver, RegistrationModel model)
+        {
+            new ConfirmationRegistrationEngine().Execute(driver, new ConfirmationRegistrationModel
+            {
+                EmailLogin = model.Email,
+                EmailPassword = model.EmailPassword,
+                FacebookPassword = model.FacebookPassword
             });
         }
     }

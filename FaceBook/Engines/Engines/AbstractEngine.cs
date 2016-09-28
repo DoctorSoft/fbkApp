@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using Serilog;
+//using Serilog;
 
 namespace Engines.Engines
 {
@@ -23,7 +23,7 @@ namespace Engines.Engines
             }
             catch (Exception exception)
             {
-                Log.Error(exception, "Exception using engine {@Engine}", this);
+                //Log.Error(exception, "Exception using engine {@Engine}", this);
                 result = new TResult();
             }
 

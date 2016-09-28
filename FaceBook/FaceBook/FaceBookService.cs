@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.IO;
+using System.Threading;
 using ChangeExcel.Implementation;
 using Engines.Engines.AuthorizationEngine;
 using Engines.Engines.ConformationRegistrationEngine;
@@ -20,6 +22,13 @@ namespace FaceBook
 {
     public class FaceBookService : IFaceBookService
     {
+        private readonly Random random;
+
+        public FaceBookService()
+        {
+            this.random = new Random();
+        }
+
         public void Registration(RemoteWebDriver driver, RegistrationModel user)
         {
             /*var statusRegistration = new RegistrationEngine().Execute(driver,
@@ -87,11 +96,14 @@ namespace FaceBook
             });
         }
 
-        public void LoadUserAvatar(RemoteWebDriver driver)
+        public void LoadUserAvatar(RemoteWebDriver driver, string folder)
         {
+            var files = Directory.GetFiles(folder);
+            var randomFileName = files[random.Next(files.Length)];
+
             new LoadUserAvatarEngine().Execute(driver, new LoadUserAvatarModel
             {
-                AvatarName = "d://incognito.jpg"
+                AvatarName = randomFileName
             });
         }
 

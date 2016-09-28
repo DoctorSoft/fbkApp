@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 ﻿using InputData.Implementation;
 ﻿using FaceBook.Constants;
 ﻿using FaceBook.Implementation;
@@ -31,9 +32,14 @@ namespace FaceBook
 
             Log.Information("Registration");
             service.Registration(driver, userList.UsersData.FirstOrDefault());
-
+            
+            service.FillingGeneralInformation(driver, userList.UsersData.FirstOrDefault());
+            service.InitialProfileSetup(driver);
             //Log.Information("Loading avatar");
-            //service.LoadUserAvatar(driver);
+
+            var folder = Directory.GetCurrentDirectory();
+            var imagesDirectory = Path.Combine(folder, "images");
+            service.LoadUserAvatar(driver, imagesDirectory);
 
             Log.Information("End application running");
         }

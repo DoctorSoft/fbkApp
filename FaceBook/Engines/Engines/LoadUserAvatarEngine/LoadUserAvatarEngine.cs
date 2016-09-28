@@ -39,7 +39,7 @@ namespace Engines.Engines.LoadUserAvatarEngine
 
             Thread.Sleep(3000);
 
-            var rootDirectory = Directory.GetDirectoryRoot(model.AvatarName);
+            var rootDirectory = Path.GetDirectoryName(model.AvatarName);
             var fileName = Path.GetFileName(model.AvatarName);
 
             if (driver is PhantomJSDriver)

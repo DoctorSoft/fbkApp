@@ -1,6 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
-﻿using InputData.Implementation;
+using System.Threading;
+using ChangeExcel.Implementation;
+using Helpers.FacebookHelpers;
+using InputData.Implementation;
 ﻿using FaceBook.Constants;
 ﻿using FaceBook.Implementation;
 ﻿using FaceBook.Interfaces;
@@ -29,17 +32,34 @@ namespace FaceBook
 
             Log.Information("Getting users");
             var userList = service.GetRegistrationUserData(inpuDataProvider);
+            var user = userList.UsersData.FirstOrDefault(); //current user
 
             Log.Information("Registration");
-            service.Registration(driver, userList.UsersData.FirstOrDefault());
-            
-            service.FillingGeneralInformation(driver, userList.UsersData.FirstOrDefault());
-            service.InitialProfileSetup(driver);
-            //Log.Information("Loading avatar");
+            var status = service.Registration(driver, userList.UsersData.FirstOrDefault());
+            if (status.StatusRegistration == false)
+            {
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
+            }
+            else
+            {
+                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-            var folder = Directory.GetCurrentDirectory();
-            var imagesDirectory = Path.Combine(folder, "images");
-            service.LoadUserAvatar(driver, imagesDirectory);
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+
+                service.ConfirmRegistration(driver, user);
+
+                service.InitialProfileSetup(driver);
+
+                service.FillingGeneralInformation(driver, user);
+
+                service.InitialProfileSetup(driver);
+
+                //Log.Information("Loading avatar");
+
+                var folder = Directory.GetCurrentDirectory();
+                var imagesDirectory = Path.Combine(folder, "images");
+                service.LoadUserAvatar(driver, imagesDirectory);
+            }
 
             Log.Information("End application running");
         }

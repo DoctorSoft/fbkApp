@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Engines.Engines.Models;
 using Engines.Engines.RegistrationEngine;
 using InputData.InputModels;
 using InputData.Interfaces;
@@ -8,7 +8,7 @@ namespace FaceBook.Interfaces
 {
     public interface IFaceBookService
     {
-        void Registration(RemoteWebDriver driver, RegistrationModel userModel);
+        StatusRegistrationModel Registration(RemoteWebDriver driver, RegistrationModel userModel);
 
         InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider);
     }

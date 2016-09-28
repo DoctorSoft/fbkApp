@@ -28,6 +28,8 @@ namespace Engines.Engines.InitialProfileSetupEngine
 
             Thread.Sleep(2000);
 
+            AvoidFacebookMessage(driver);
+
             var chatDisable = HtmlHelper.GetElementByXPath(driver, "//*[@id='fbDockChatBuddylistNub']/a/span[2]");
             if (!chatDisable.Text.Contains("Чат (Отключен)"))
             {
@@ -60,6 +62,9 @@ namespace Engines.Engines.InitialProfileSetupEngine
             //disable video call
 
             Thread.Sleep(2500);
+
+            AvoidFacebookMessage(driver);
+
             IWebElement chatOptionButton = HtmlHelper.GetElementByCssSelector(driver, ".clearfix.rfloat._ohf");
             if (chatOptionButton.Displayed == false)
             {
@@ -107,10 +112,6 @@ namespace Engines.Engines.InitialProfileSetupEngine
                 IWebElement applyDisableVideoButton = HtmlHelper.GetElementByCssSelector(driver,
                     "._42ft._4jy0.layerConfirm.uiOverlayButton._4jy3._4jy1.selected._51sy");
                 applyDisableVideoButton.Click();
-            }
-            else
-            {
-                return;
             }
         }
 

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumExtensions\SettingsUrlExtension.cs" />
+    <Compile Include="ErrorCodes.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="OptionAnswers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

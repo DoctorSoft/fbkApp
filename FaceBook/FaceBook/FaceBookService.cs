@@ -9,6 +9,7 @@ using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
 using Engines.Engines.LoadUserAvatar;
 using Engines.Engines.LoadUserAvatarEngine;
+using Engines.Engines.Models;
 using Engines.Engines.ProfileConfirmationEngine;
 using Engines.Engines.RegistrationEngine;
 using FaceBook.Interfaces;
@@ -29,9 +30,9 @@ namespace FaceBook
             this.random = new Random();
         }
 
-        public void Registration(RemoteWebDriver driver, RegistrationModel user)
+        public StatusRegistrationModel Registration(RemoteWebDriver driver, RegistrationModel user)
         {
-            /*var statusRegistration = new RegistrationEngine().Execute(driver,
+            var statusRegistration = new RegistrationEngine().Execute(driver,
                 new RegistrationModel
                 {
                     LastName = user.LastName,
@@ -43,35 +44,7 @@ namespace FaceBook
                     Gender = user.Gender
                 });
 
-            user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
-            user.UserInfo.UserHomePageUrl = user.HomepageUrl; //Заменить
-
-            if (statusRegistration != null)
-            {
-                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, statusRegistration);
-            }
-            else
-            {
-                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
-
-                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
-
-                Thread.Sleep(1500);
-
-                ConfirmRegistration(driver, user); 
-
-                InitialProfileSetup(driver);
-
-                FillingGeneralInformation(driver, user);
-
-                LoadUserAvatar(driver);
-            }
-
-            Thread.Sleep(2000);
-             */
-
-            Authorize(driver, user);
-            FillingGeneralInformation(driver, user);
+            return statusRegistration;
         }
 
 

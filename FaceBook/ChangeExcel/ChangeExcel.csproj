@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Constants\Enums.csproj">
+      <Project>{1608CBE8-91C8-4502-80D4-047DAEBD8689}</Project>
+      <Name>Enums</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Engines\Engines.csproj">
       <Project>{43626146-B80F-40AC-813C-70D2075A6843}</Project>
       <Name>Engines</Name>

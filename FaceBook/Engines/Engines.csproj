@@ -71,6 +71,7 @@
     <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupEngine.cs" />
     <Compile Include="Engines\InitialProfileSetupEngine\InitialProfileSetupModel.cs" />
     <Compile Include="Engines\Models\ErrorModel.cs" />
+    <Compile Include="Engines\Models\StatusRegistrationModel.cs" />
     <Compile Include="Engines\ProfileConfirmationEngine\ProfileConfirmationEngine.cs" />
     <Compile Include="Engines\ProfileConfirmationEngine\ProfileConfirmationModel.cs" />
     <Compile Include="Engines\RegistrationEngine\RegistrationEngine.cs" />

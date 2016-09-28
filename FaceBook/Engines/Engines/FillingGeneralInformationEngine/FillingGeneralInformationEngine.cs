@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,6 +9,7 @@ using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 //using Serilog;
+using OpenQA.Selenium.Support.UI;
 
 namespace Engines.Engines.FillingGeneralInformationEngine
 {
@@ -16,14 +17,15 @@ namespace Engines.Engines.FillingGeneralInformationEngine
     {
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
+            var wait = new WebDriverWait(driver, new TimeSpan(10));
 
             //Log.Logger = new LoggerConfiguration().WriteTo.File("facebook-logs.txt").CreateLogger();
 
-            //FillingWorkAndEducation(driver, model);
+            FillingWorkAndEducation(driver, model);
 
             FillingLiving(driver, model);
 
-            //FillingsRelationship(driver, model);
+            FillingsRelationship(driver, model);
 
             return new VoidResult();
         }
@@ -81,7 +83,6 @@ namespace Engines.Engines.FillingGeneralInformationEngine
         private void FillWorkSection(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
             // work
-
             var workLink =
                 driver.GetElementsByCssSelector("._6a._5u5j._6b").FirstOrDefault(m => m.Text == "Укажите место работы");
             if (workLink != null)

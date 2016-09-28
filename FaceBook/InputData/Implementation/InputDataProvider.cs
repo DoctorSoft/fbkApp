@@ -78,7 +78,7 @@ namespace InputData.Implementation
                 var homePageUrl = (userDataSheet.Cells[rowIndex, (int)ColumnName.HomePageUrl] as Excel.Range).Value;
                 
                 var userInfo = ParseUserInfoSheet(userInfoSheet, (int)id);
-                userInfo.UserHomePageUrl = homePageUrl;
+                if (homePageUrl!=null) userInfo.UserHomePageUrl = homePageUrl;
 
                 if (facebookPassword == null)
                 {

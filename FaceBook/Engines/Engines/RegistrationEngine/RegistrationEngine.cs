@@ -12,9 +12,9 @@ using Keys = OpenQA.Selenium.Keys;
 
 namespace Engines.Engines.RegistrationEngine
 {
-    public class RegistrationEngine: AbstractEngine<RegistrationModel, ErrorModel>
+    public class RegistrationEngine : AbstractEngine<RegistrationModel, StatusRegistrationModel>
     {
-        protected override ErrorModel ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
+        protected override StatusRegistrationModel ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
             NavigateToUrl(driver);
             try
@@ -52,9 +52,20 @@ namespace Engines.Engines.RegistrationEngine
 
                 if (CheckErrors(driver))
                 {
-                    return new ErrorModel
+                    return new StatusRegistrationModel
                     {
-                        ErrorText = GetErrorText(driver)
+                        StatusRegistration = false,
+                        Error = GetError(driver)
+                    };
+                }
+
+                var error = ChekLockStatus(driver);
+                if (error != null)
+                {
+                    return new StatusRegistrationModel
+                    {
+                        StatusRegistration = false,
+                        Error = error
                     };
                 }
 
@@ -91,14 +102,30 @@ namespace Engines.Engines.RegistrationEngine
             Thread.Sleep(2000);
             driver.Keyboard.SendKeys(Keys.Enter);
             var errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
-            return errorElement != null ? true : false;
+            return errorElement != null;
         }
 
-        private string GetErrorText(RemoteWebDriver driver)
+        private ErrorModel GetError(RemoteWebDriver driver)
         {
             var errorElement = HtmlHelper.GetElementById(driver, "reg_error_inner");
             var textError = errorElement.Text;
-            return textError;
+            return new ErrorModel
+            {
+                ErrorText = textError
+            };
+        }
+        
+        private ErrorModel ChekLockStatus(RemoteWebDriver driver)
+        {
+            var label = driver.FindElements(By.CssSelector(".mbm.fsl.fwb.fcb")).FirstOrDefault(m => m.Text == "Используйте телефон для подтверждения своего аккаунта.");
+            if (label != null)
+                return new ErrorModel
+                {
+                    Code = ErrorCodes.BindingToThePhoneNumber,
+                    ErrorText = "Используйте телефон для подтверждения своего аккаунта."
+                };
+
+            return null;
         }
     }
 }

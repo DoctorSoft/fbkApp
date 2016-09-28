@@ -51,7 +51,12 @@ namespace ChangeExcel.Implementation
                 }
                 (worksheet.Cells[rowIndex, (int)ColumnName.RegistratedStatus] as Excel.Range).Value = statusRegistration;
                 if (homePageUrl == null) (worksheet.Cells[rowIndex, (int)ColumnName.HomePageUrl] as Excel.Range).Value = model.HomepageUrl;
-                if (!statusRegistration) (worksheet.Cells[rowIndex, (int)ColumnName.TextError] as Excel.Range).Value = errors.ErrorText;
+                if (!statusRegistration)
+                {
+                    (worksheet.Cells[rowIndex, (int)ColumnName.TextError] as Excel.Range).Value = errors.ErrorText;
+                    (worksheet.Cells[rowIndex, (int)ColumnName.ErrorCode] as Excel.Range).Value = errors.Code;
+                }
+
                 break;
             }
 

@@ -35,6 +35,10 @@ namespace FaceBook
             var user = userList.UsersData.FirstOrDefault(); //current user
             
             Log.Information("Registration");
+
+            //service.Authorize(driver, user);
+
+           
             var status = service.Registration(driver, userList.UsersData.FirstOrDefault());
             if (status.StatusRegistration == false)
             {
@@ -46,9 +50,9 @@ namespace FaceBook
 
                 new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
-                service.ConfirmRegistration(driver, user);
+                //service.ConfirmRegistration(driver, user);
 
-                service.InitialProfileSetup(driver);
+                //service.InitialProfileSetup(driver);
 
                 service.FillingGeneralInformation(driver, user);
                 
@@ -58,8 +62,8 @@ namespace FaceBook
                 var imagesDirectory = Path.Combine(folder, "images");
                 service.LoadUserAvatar(driver, imagesDirectory);
             }
-
             Log.Information("End application running");
+        
         }
 
     }

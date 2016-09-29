@@ -33,7 +33,7 @@ namespace FaceBook
             Log.Information("Getting users");
             var userList = service.GetRegistrationUserData(inpuDataProvider);
             var user = userList.UsersData.FirstOrDefault(); //current user
-
+            
             Log.Information("Registration");
             var status = service.Registration(driver, userList.UsersData.FirstOrDefault());
             if (status.StatusRegistration == false)
@@ -51,9 +51,7 @@ namespace FaceBook
                 service.InitialProfileSetup(driver);
 
                 service.FillingGeneralInformation(driver, user);
-
-                service.InitialProfileSetup(driver);
-
+                
                 //Log.Information("Loading avatar");
 
                 var folder = Directory.GetCurrentDirectory();

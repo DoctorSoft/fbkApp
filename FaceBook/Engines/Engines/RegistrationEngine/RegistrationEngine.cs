@@ -17,6 +17,7 @@ namespace Engines.Engines.RegistrationEngine
         protected override StatusRegistrationModel ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
             NavigateToUrl(driver);
+
             try
             {
                 if (FacebookHelper.GetLogOutStatus(driver))
@@ -71,10 +72,14 @@ namespace Engines.Engines.RegistrationEngine
 
                 AvoidFacebookMessage(driver);
             }
-            catch (Exception)
+            catch
             {
             }
-            return null;
+            return new StatusRegistrationModel
+            {
+                StatusRegistration = true,
+                Error = null
+            };
         }
 
         private void AddTextInElement(IWebElement element, string text)
@@ -117,6 +122,7 @@ namespace Engines.Engines.RegistrationEngine
         
         private ErrorModel ChekLockStatus(RemoteWebDriver driver)
         {
+            Thread.Sleep(2000);
             var label = driver.FindElements(By.CssSelector(".mbm.fsl.fwb.fcb")).FirstOrDefault(m => m.Text == "Используйте телефон для подтверждения своего аккаунта.");
             if (label != null)
                 return new ErrorModel

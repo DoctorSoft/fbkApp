@@ -8,6 +8,7 @@ using Helpers.FacebookHelpers;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
 using Keys = OpenQA.Selenium.Keys;
 
 namespace Engines.Engines.RegistrationEngine
@@ -16,10 +17,15 @@ namespace Engines.Engines.RegistrationEngine
     {
         protected override StatusRegistrationModel ExecuteEngine(RemoteWebDriver driver, RegistrationModel model)
         {
+            var wait = new WebDriverWait(driver, TimeSpan.FromMinutes(1));
+
             NavigateToUrl(driver);
 
             try
             {
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".mbs._52lq.fsl.fwb.fcb")));
+                                                                                              
+
                 if (FacebookHelper.GetLogOutStatus(driver))
                 {
                     LogOut(driver);
@@ -72,8 +78,16 @@ namespace Engines.Engines.RegistrationEngine
 
                 AvoidFacebookMessage(driver);
             }
-            catch
+            catch(WebDriverTimeoutException ex)
             {
+                return new StatusRegistrationModel
+                {
+                    StatusRegistration = false,
+                    Error = new ErrorModel
+                    {
+                        ErrorText = ex.Message
+                    }
+                };
             }
             return new StatusRegistrationModel
             {

@@ -8,7 +8,6 @@ using Engines.Engines.Models;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-//using Serilog;
 using OpenQA.Selenium.Support.UI;
 
 namespace Engines.Engines.FillingGeneralInformationEngine
@@ -17,8 +16,6 @@ namespace Engines.Engines.FillingGeneralInformationEngine
     {
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
-            //Log.Logger = new LoggerConfiguration().WriteTo.File("facebook-logs.txt").CreateLogger();
-
             FillingWorkAndEducation(driver, model);
 
             FillingLiving(driver, model);
@@ -38,10 +35,10 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             AvoidFacebookMessage(driver);
 
             FillWorkSection(driver, model);
-            
-            //FillSkillsSection(driver, model);
 
-            FillUniversutySection(driver, model);
+            FillSkillsSection(driver, model);
+
+            FillUniversitySection(driver, model);
 
             FillSchoolSection(driver, model);
         }
@@ -85,17 +82,23 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             var workLink =
-                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b"))).FirstOrDefault(m => m.Text == "Укажите место работы");
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b")))
+                    .FirstOrDefault(m => m.Text == "Укажите место работы");
             if (workLink == null) return;
             HtmlHelper.ClickElement(workLink);
 
             Thread.Sleep(2000);
 
-            var company = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("employer_name"))).FirstOrDefault();
-            var post = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("position_text"))).FirstOrDefault();
-            var city = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("location_text"))).FirstOrDefault();
-            var description = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("description"))).FirstOrDefault();
-            var buttonWorkApply = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+            var company =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("employer_name"))).FirstOrDefault();
+            var post =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("position_text"))).FirstOrDefault();
+            var city =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("location_text"))).FirstOrDefault();
+            var description =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("description"))).FirstOrDefault();
+            var buttonWorkApply =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
 
             if (company != null)
             {
@@ -105,8 +108,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             Thread.Sleep(2000);
 
-            var result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
+            var result = ChooseAnswerInComboBox(driver);
             HtmlHelper.ClickElement(result);
 
             if (post != null)
@@ -117,8 +119,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             Thread.Sleep(2000);
 
-            result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
+            result = ChooseAnswerInComboBox(driver);
 
             HtmlHelper.ClickElement(result);
 
@@ -130,9 +131,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             Thread.Sleep(2000);
 
-            result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
-               
+            result = ChooseAnswerInComboBox(driver);
+
             HtmlHelper.ClickElement(result);
 
             if (description != null)
@@ -140,7 +140,6 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 description.Clear();
                 description.SendKeys(model.DescriptionWork);
             }
-            HtmlHelper.ClickElement(result);
 
             HtmlHelper.ClickElement(buttonWorkApply);
         }
@@ -149,48 +148,68 @@ namespace Engines.Engines.FillingGeneralInformationEngine
         {
             // skills
 
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
             var skillLink =
                 driver.GetElementsByCssSelector("._6a._5u5j._6b")
                     .FirstOrDefault(m => m.Text == "Укажите умения и навыки");
-            if (skillLink != null)
+
+            if (skillLink == null) return;
+
+            HtmlHelper.ClickElement(skillLink);
+
+            var skills = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.ClassName("_58al"))).FirstOrDefault();
+            var buttonSkillApply = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+
+            if (skills != null)
             {
-                HtmlHelper.ClickElement(skillLink);
-
-                var skills = HtmlHelper.GetElementByClass(driver, "_58al");
-                var buttonSkillApply = HtmlHelper.GetElementByName(driver, "__submit__");
-
                 skills.Clear();
                 skills.SendKeys(model.Skills);
-                Thread.Sleep(500);
-                SendKeys.SendWait("{Enter}");
-                Thread.Sleep(500);
-
-
-                HtmlHelper.ClickElement(buttonSkillApply);
-                Thread.Sleep(1000);
             }
+
+            Thread.Sleep(500);
+
+            SendKeys.SendWait("{DOWN}");
+
+            Thread.Sleep(500);
+
+            SendKeys.SendWait("{ENTER}");
+
+            HtmlHelper.ClickElement(buttonSkillApply);
+
+            Thread.Sleep(1000);
         }
 
-        private void FillUniversutySection(RemoteWebDriver driver, FillingGeneralInformationModel model)
+        private void FillUniversitySection(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
             // Univercity
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             var univercityLink =
-                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b"))).FirstOrDefault(m => m.Text == "Укажите вуз");
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b")))
+                    .FirstOrDefault(m => m.Text == "Укажите вуз");
 
             if (univercityLink == null) return;
             HtmlHelper.ClickElement(univercityLink);
 
             Thread.Sleep(1500);
 
-            var univercity = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
-            var descriptionUnivercity = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("description"))).FirstOrDefault();
-            var specialization1 = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("concentration_text[0]"))).FirstOrDefault();
-            var specialization2 = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("concentration_text[1]"))).FirstOrDefault();
-            var specialization3 = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("concentration_text[2]"))).FirstOrDefault();
-            var buttonUnivercityApply = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+            var univercity =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
+            var descriptionUnivercity =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("description"))).FirstOrDefault();
+            var specialization1 =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("concentration_text[0]")))
+                    .FirstOrDefault();
+            var specialization2 =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("concentration_text[1]")))
+                    .FirstOrDefault();
+            var specialization3 =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("concentration_text[2]")))
+                    .FirstOrDefault();
+            var buttonUnivercityApply =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
 
             if (univercity != null)
             {
@@ -200,22 +219,34 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             Thread.Sleep(2000);
 
-            var result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
-
+            var result = ChooseAnswerInComboBox(driver);
+            
             HtmlHelper.ClickElement(result);
 
+            var titleNewUnivercityWindow = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".lfloat._ohe"))).FirstOrDefault();
+            if (titleNewUnivercityWindow != null) CreateNewUnivercity(driver, model);
+
             var city = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("city"))).FirstOrDefault();
-            if (city != null)
+            if (city != null && city.Displayed)
             {
                 city.SendKeys(model.UnivercityCity);
+
+                Thread.Sleep(2000);
+
+                result = ChooseAnswerInComboBox(driver);
+
+                HtmlHelper.ClickElement(result);
             }
+
+            Thread.Sleep(1000);
 
             if (descriptionUnivercity != null)
             {
                 descriptionUnivercity.Clear();
                 descriptionUnivercity.SendKeys(model.DescriptionUnivercity);
             }
+
+            Thread.Sleep(1000);
 
             if (specialization1 != null)
             {
@@ -224,9 +255,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             }
 
             Thread.Sleep(2000);
-                
-            result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
+
+            result = ChooseAnswerInComboBox(driver);
 
             if (result != null && result.Displayed)
             {
@@ -234,6 +264,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             }
 
             HtmlHelper.ClickElement(buttonUnivercityApply);
+
+            Thread.Sleep(2000);
         }
 
         private void FillSchoolSection(RemoteWebDriver driver, FillingGeneralInformationModel model)
@@ -242,48 +274,52 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            var schoolLink = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b"))).FirstOrDefault(m => m.Text == "Укажите среднюю школу");
-           
+            var schoolLink =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b")))
+                    .FirstOrDefault(m => m.Text == "Укажите среднюю школу");
+
             if (schoolLink == null) return;
 
             HtmlHelper.ClickElement(schoolLink);
-                
-            var school = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
-            var descriptionSchool = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("description"))).FirstOrDefault();
-            var buttonSchoolApply = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+
+            var school =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
+            var descriptionSchool =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("description"))).FirstOrDefault();
+            var buttonSchoolApply =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
 
             if (descriptionSchool != null)
             {
                 descriptionSchool.Clear();
                 descriptionSchool.SendKeys(model.DescriptionSchool);
             }
-            
+
             if (school != null)
             {
                 school.Clear();
                 school.SendKeys(model.School);
             }
-            
-            Thread.Sleep(2000);
 
-            wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.ClassName("compact")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
+            Thread.Sleep(2000);
 
             var result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
                 .FirstOrDefault(m => m.GetAttribute("class") == "page");
+
             HtmlHelper.ClickElement(result);
 
             var city = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("city"))).FirstOrDefault();
             if (city != null && city.Displayed)
             {
                 city.SendKeys(model.SchoolCity);
+                /*
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.ClassName("basic")))
-                    .FirstOrDefault(m => m.GetAttribute("class") == "page");
+                    .FirstOrDefault(m => m.GetAttribute("class") == "page");*/
 
                 Thread.Sleep(2000);
 
                 result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "page");
+                    .FirstOrDefault(m => m.GetAttribute("class") == "page");
                 HtmlHelper.ClickElement(result);
             }
 
@@ -304,8 +340,11 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             Thread.Sleep(2000);
 
-            var currentCity =   wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".inputtext.textInput"))).FirstOrDefault();
-            var buttonCurrentCityApply = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+            var currentCity =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".inputtext.textInput")))
+                    .FirstOrDefault();
+            var buttonCurrentCityApply =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
 
             if (currentCity != null)
             {
@@ -330,13 +369,17 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             var linkNativeCity =
-                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b"))).FirstOrDefault(m => m.Text == "Добавьте родной город");
-            
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._6a._5u5j._6b")))
+                    .FirstOrDefault(m => m.Text == "Добавьте родной город");
+
             if (linkNativeCity == null) return;
             HtmlHelper.ClickElement(linkNativeCity);
 
-            var nativeCity =  wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".inputtext.textInput"))).FirstOrDefault();
-            var buttonNativeCityApply =  wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+            var nativeCity =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".inputtext.textInput")))
+                    .FirstOrDefault();
+            var buttonNativeCityApply =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
 
             if (nativeCity != null)
             {
@@ -370,7 +413,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             Thread.Sleep(2000);
 
-            var selectFamilyStatus = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("status"))).FirstOrDefault();
+            var selectFamilyStatus =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("status"))).FirstOrDefault();
 
             if (selectFamilyStatus == null) return;
 
@@ -385,11 +429,53 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                             m.GetAttribute("familystatus") == model.FamilyStatus.ToString("G") ||
                             m.GetAttribute("value") == model.FamilyStatus.ToString("G"));
 
-            var buttonFamilyStatus = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
-            
+            var buttonFamilyStatus =
+                wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
+
             HtmlHelper.ClickElement(answer);
 
             HtmlHelper.ClickElement(buttonFamilyStatus);
         }
+
+        private IWebElement ChooseAnswerInComboBox(RemoteWebDriver driver)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+
+            return wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
+                .FirstOrDefault(m => m.GetAttribute("class") == "addnew calltoaction") ??
+                   wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
+                       .FirstOrDefault(
+                           m => m.GetAttribute("class") == "page" || m.GetAttribute("class") == "page selected");
+        }
+
+        private void CreateNewUnivercity(RemoteWebDriver driver, FillingGeneralInformationModel model)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            var city =
+                wait.Until(
+                    ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector("._55r1._55r2._58ak._3ct8>._58al")))
+                    .FirstOrDefault();
+            if (city == null) return;
+            city.Clear();
+
+            city.SendKeys(model.UnivercityCity);
+
+            Thread.Sleep(500);
+
+            SendKeys.SendWait("{DOWN}");
+
+            Thread.Sleep(500);
+ 
+            SendKeys.SendWait("{ENTER}");
+
+            var button =
+                wait.Until(
+                    ExpectedConditions.PresenceOfAllElementsLocatedBy(
+                        By.CssSelector("._42ft._4jy0.layerConfirm.uiOverlayButton._4jy3._4jy1.selected._51sy")))
+                    .FirstOrDefault();
+
+            HtmlHelper.ClickElement(button);
+        }
     }
 }
+

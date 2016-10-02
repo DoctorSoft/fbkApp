@@ -40,15 +40,15 @@ namespace FaceBook
 //            service.Authorize(driver, user);
 //            service.FillingGeneralInformation(driver, user);
             
-//            var status = service.Registration(driver, user);
-//            if (status.StatusRegistration == false)
-//            {
-//                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
-//            }
-//            else
-//            {
-//                if (status.Error.Code == ErrorCodes.VerifyAccount)
-//                {
+            var status = service.Registration(driver, user);
+            if (status.StatusRegistration == false)
+            {
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
+            }
+            else
+            {
+                if (status.Error.Code == ErrorCodes.VerifyAccount)
+                {
                     var conformationError = service.ConfirmRegistration(driver, user);
                     if (conformationError == null)
                     {
@@ -70,9 +70,9 @@ namespace FaceBook
                     {
                         new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, conformationError);
                     }
-//                }
-//            }
-//            Log.Information("End application running");
+                }
+            }
+            Log.Information("End application running");
         
         }
 

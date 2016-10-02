@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using Constants;
 using Engines.Engines.Models;
 using Helpers.FacebookHelpers;
@@ -20,6 +21,8 @@ namespace Engines.Engines.RegistrationEngine
             var wait = new WebDriverWait(driver, TimeSpan.FromMinutes(1));
 
             NavigateToUrl(driver);
+
+            Thread.Sleep(2000);
             
             try
             {
@@ -146,7 +149,7 @@ namespace Engines.Engines.RegistrationEngine
 
         public static ErrorModel ChekLockStatus(RemoteWebDriver driver)
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(7000);
             
             var label = driver.FindElements(By.CssSelector(".mbm.fsl.fwb.fcb")).FirstOrDefault(m => m.Text == "Используйте телефон для подтверждения своего аккаунта.");
             if (label != null)

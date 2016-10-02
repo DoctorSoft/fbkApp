@@ -10,7 +10,7 @@ namespace FaceBook.Constants
             return new ProxyData
             {
                 ProxyPort = "34530",
-                ProxyType = "http",
+                ProxyType = "https",
                 ProxyAddress = "5.101.64.137",
                 ProxyUserName = "movses21",
                 ProxyPassword = "2V1G10W6Xy"

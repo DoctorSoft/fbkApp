@@ -94,14 +94,16 @@ namespace FaceBook
             new FillingGeneralInformationEngine().Execute(driver, model.UserInfo);
         }
 
-        public void ConfirmRegistration(RemoteWebDriver driver, RegistrationModel model)
+        public ErrorModel ConfirmRegistration(RemoteWebDriver driver, RegistrationModel model)
         {
-            new ConfirmationRegistrationEngine().Execute(driver, new ConfirmationRegistrationModel
+            var result = new ConfirmationRegistrationEngine().Execute(driver, new ConfirmationRegistrationModel
             {
                 EmailLogin = model.Email,
                 EmailPassword = model.EmailPassword,
                 FacebookPassword = model.FacebookPassword
             });
+
+            return result;
         }
 
         public void ProfileConfirm(RemoteWebDriver driver, RegistrationModel model)

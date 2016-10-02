@@ -8,8 +8,6 @@ namespace Engines.Engines.GetIpEngine
     {
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, GetIpModel model)
         {
-            Thread.Sleep(15000);
-
             driver.Navigate().GoToUrl("https://2ip.ru/");
 
             Thread.Sleep(30000);

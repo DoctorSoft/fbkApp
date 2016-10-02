@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using ChangeExcel.Implementation;
+using Constants;
 using Helpers.FacebookHelpers;
 using InputData.Implementation;
 ﻿using FaceBook.Constants;
@@ -33,36 +34,45 @@ namespace FaceBook
             Log.Information("Getting users");
             var userList = service.GetRegistrationUserData(inpuDataProvider);
             var user = userList.UsersData.FirstOrDefault(); //current user
-            
+
             Log.Information("Registration");
 
-            //service.Authorize(driver, user);
+//            service.Authorize(driver, user);
+//            service.FillingGeneralInformation(driver, user);
+            
+//            var status = service.Registration(driver, user);
+//            if (status.StatusRegistration == false)
+//            {
+//                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
+//            }
+//            else
+//            {
+//                if (status.Error.Code == ErrorCodes.VerifyAccount)
+//                {
+                    var conformationError = service.ConfirmRegistration(driver, user);
+                    if (conformationError == null)
+                    {
+                        user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-           
-            var status = service.Registration(driver, userList.UsersData.FirstOrDefault());
-            if (status.StatusRegistration == false)
-            {
-                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
-            }
-            else
-            {
-                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+                        new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
-                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                        service.InitialProfileSetup(driver);
 
-                //service.ConfirmRegistration(driver, user);
+                        service.FillingGeneralInformation(driver, user);
 
-                //service.InitialProfileSetup(driver);
+                        //Log.Information("Loading avatar");
 
-                service.FillingGeneralInformation(driver, user);
-                
-                //Log.Information("Loading avatar");
-
-                var folder = Directory.GetCurrentDirectory();
-                var imagesDirectory = Path.Combine(folder, "images");
-                service.LoadUserAvatar(driver, imagesDirectory);
-            }
-            Log.Information("End application running");
+                        /*var folder = Directory.GetCurrentDirectory();
+                        var imagesDirectory = Path.Combine(folder, "images");
+                        service.LoadUserAvatar(driver, imagesDirectory);*/
+                    }
+                    else
+                    {
+                        new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, conformationError);
+                    }
+//                }
+//            }
+//            Log.Information("End application running");
         
         }
 

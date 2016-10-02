@@ -18,9 +18,9 @@ namespace Engines.Engines.FillingGeneralInformationEngine
         {
             FillingWorkAndEducation(driver, model);
 
-            //FillingLiving(driver, model);
+            FillingLiving(driver, model);
             
-            //FillingsRelationship(driver, model);
+            FillingsRelationship(driver, model);
             
             return new VoidResult();
         }
@@ -34,13 +34,13 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             AvoidFacebookMessage(driver);
 
-            /*FillWorkSection(driver, model);
+            FillWorkSection(driver, model);
 
             Thread.Sleep(3000);
 
             FillSkillsSection(driver, model);
 
-            Thread.Sleep(3000);*/
+            Thread.Sleep(3000);
 
             FillUniversitySection(driver, model);
 
@@ -117,6 +117,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             var result = ChooseAnswerInComboBox(driver);
             HtmlHelper.ClickElement(result);
+            
+            Thread.Sleep(2000);
 
             if (post != null)
             {
@@ -127,10 +129,11 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             Thread.Sleep(2000);
 
             result = ChooseAnswerInComboBox(driver);
-
             HtmlHelper.ClickElement(result);
 
-            if (city != null)
+            Thread.Sleep(2000);
+
+            if ((city != null) && (city.Text == ""))
             {
                 city.Clear();
                 city.SendKeys(model.CityWork);
@@ -139,8 +142,9 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             Thread.Sleep(2000);
 
             result = ChooseAnswerInComboBox(driver);
-
             HtmlHelper.ClickElement(result);
+
+            Thread.Sleep(2000);
 
             if (description != null)
             {
@@ -199,7 +203,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (univercityLink == null) return;
             HtmlHelper.ClickElement(univercityLink);
 
-            Thread.Sleep(1500);
+            Thread.Sleep(2000);
 
             var univercity =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
@@ -229,7 +233,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             
             HtmlHelper.ClickElement(result);
 
-            var titleNewUnivercityWindow = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".lfloat._ohe"))).FirstOrDefault();
+            var titleNewUnivercityWindow = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".lfloat._ohe")));
             if (titleNewUnivercityWindow != null) CreateNewUnivercity(driver, model);
 
             var city = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("city"))).FirstOrDefault();
@@ -244,7 +248,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 HtmlHelper.ClickElement(result);
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             if (descriptionUnivercity != null)
             {
@@ -252,7 +256,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 descriptionUnivercity.SendKeys(model.DescriptionUnivercity);
             }
 
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             if (specialization1 != null)
             {
@@ -460,16 +464,17 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (city == null) return;
 
             city.Clear();
-
             city.SendKeys(model.UnivercityCity);
 
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             SendKeys.SendWait("{DOWN}");
 
             Thread.Sleep(500);
  
             SendKeys.SendWait("{ENTER}");
+
+            Thread.Sleep(1000);
 
             var button =
                 wait.Until(
@@ -493,15 +498,19 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (city == null) return;
             city.Clear();
 
+            Thread.Sleep(2000);
+
             city.SendKeys(model.SchoolCity);
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             SendKeys.SendWait("{DOWN}");
 
             Thread.Sleep(500);
 
             SendKeys.SendWait("{ENTER}");
+
+            Thread.Sleep(2000);
 
             var button =
                 wait.Until(

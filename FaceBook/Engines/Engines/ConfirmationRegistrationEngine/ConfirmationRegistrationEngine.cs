@@ -5,12 +5,13 @@ using Engines.Engines.Models;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using registrationEngine = Engines.Engines.RegistrationEngine.RegistrationEngine;
 
 namespace Engines.Engines.ConformationRegistrationEngine
 {
-    public class ConfirmationRegistrationEngine: AbstractEngine<ConfirmationRegistrationModel, VoidResult>
+    public class ConfirmationRegistrationEngine: AbstractEngine<ConfirmationRegistrationModel, ErrorModel>
     {
-        protected override VoidResult ExecuteEngine(RemoteWebDriver driver, ConfirmationRegistrationModel model)
+        protected override ErrorModel ExecuteEngine(RemoteWebDriver driver, ConfirmationRegistrationModel model)
         {
             NavigateToUrl(driver, "http://www.mail.ru");
 
@@ -20,11 +21,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
             }
 
             Authorize(driver, model.EmailLogin, model.EmailPassword);
-            ConformatRegistration(driver, model.FacebookPassword);
-
-            Thread.Sleep(1500);
-
-            return new VoidResult();
+            return ConformatRegistration(driver, model.FacebookPassword);
         }
 
         private IWebElement GetWebElementById(RemoteWebDriver driver, string idName)
@@ -68,9 +65,9 @@ namespace Engines.Engines.ConformationRegistrationEngine
             HtmlHelper.ClickElement(authButton);
         }
 
-        private void ConformatRegistration(RemoteWebDriver driver, string password)
+        private ErrorModel ConformatRegistration(RemoteWebDriver driver, string password)
         {
-
+            Thread.Sleep(5000);
             List<IWebElement> lettersTitle = driver.FindElements(By.ClassName("b-datalist__item__subj")).ToList();
 
             string link = "";
@@ -81,16 +78,31 @@ namespace Engines.Engines.ConformationRegistrationEngine
                 {
                     HtmlHelper.ClickElement(letterTitle);
 
-                    Thread.Sleep(1500);
+                    Thread.Sleep(5000);
 
-                    link = driver.FindElements(By.TagName("a")).Where(m => m.GetAttribute("rel") == "noopener").FirstOrDefault(m => m.Text == "Не забудьте подтвердить свой аккаунт Facebook").GetAttribute("href");
+                    link = driver.FindElements(By.TagName("a")).Where(m => m.GetAttribute("rel") == "noopener").FirstOrDefault(m => m.Text == "Не забудьте подтвердить свой аккаунт Facebook"
+                        || m.Text == "Подтвердите свой аккаунт").GetAttribute("href");
                     break;
                 }
             }
 
             NavigateToUrl(driver, link);
+            
+            Thread.Sleep(2000);
+            AvoidFacebookMessage(driver);
+
+            Thread.Sleep(3000);
+            var error = registrationEngine.ChekLockStatus(driver);
+            if (error != null)
+                return new ErrorModel
+                {
+                    Code = error.Code,
+                    ErrorText = error.ErrorText
+                };
+
             EnterPassword(driver, password);
 
+            return null;
         }
 
         private void EnterPassword(RemoteWebDriver driver, string password)

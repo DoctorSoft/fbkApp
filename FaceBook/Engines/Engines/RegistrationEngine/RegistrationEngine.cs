@@ -20,7 +20,7 @@ namespace Engines.Engines.RegistrationEngine
             var wait = new WebDriverWait(driver, TimeSpan.FromMinutes(1));
 
             NavigateToUrl(driver);
-
+            
             try
             {
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".mbs._52lq.fsl.fwb.fcb")));
@@ -69,6 +69,14 @@ namespace Engines.Engines.RegistrationEngine
                 var error = ChekLockStatus(driver);
                 if (error != null)
                 {
+                    if (error.Code == ErrorCodes.VerifyAccount)
+                    {
+                        return new StatusRegistrationModel
+                        {
+                            StatusRegistration = true,
+                            Error = error
+                        };
+                    }
                     return new StatusRegistrationModel
                     {
                         StatusRegistration = false,
@@ -105,6 +113,8 @@ namespace Engines.Engines.RegistrationEngine
 
             element.Clear();
             element.SendKeys(text);
+
+            Thread.Sleep(1500);
         }
 
         private void LogOut(RemoteWebDriver driver)
@@ -133,10 +143,11 @@ namespace Engines.Engines.RegistrationEngine
                 ErrorText = textError
             };
         }
-        
-        private ErrorModel ChekLockStatus(RemoteWebDriver driver)
+
+        public static ErrorModel ChekLockStatus(RemoteWebDriver driver)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
+            
             var label = driver.FindElements(By.CssSelector(".mbm.fsl.fwb.fcb")).FirstOrDefault(m => m.Text == "Используйте телефон для подтверждения своего аккаунта.");
             if (label != null)
                 return new ErrorModel
@@ -145,6 +156,21 @@ namespace Engines.Engines.RegistrationEngine
                     ErrorText = "Используйте телефон для подтверждения своего аккаунта."
                 };
 
+            label = driver.FindElements(By.ClassName("_2e9n")).FirstOrDefault(m => m.Text == "Ваш аккаунт отключен.");
+            if (label != null)
+                return new ErrorModel
+                {
+                    Code = ErrorCodes.AccountDisabled,
+                    ErrorText = "Аккаунт отключен."
+                };
+
+            label = driver.FindElements(By.ClassName("uiHeaderTitle")).FirstOrDefault(m => m.Text == "Подтвердите свой эл. адрес");
+            if (label != null)
+                return new ErrorModel
+                {
+                    Code = ErrorCodes.VerifyAccount,
+                    ErrorText = "Подтвердите аккаунт."
+                };
             return null;
         }
     }

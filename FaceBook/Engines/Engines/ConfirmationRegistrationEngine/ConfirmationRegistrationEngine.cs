@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.Models;
 using Helpers.HtmlHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using registrationEngine = Engines.Engines.RegistrationEngine.RegistrationEngine;
 
-namespace Engines.Engines.ConformationRegistrationEngine
+namespace Engines.Engines.ConfirmationRegistrationEngine
 {
     public class ConfirmationRegistrationEngine: AbstractEngine<ConfirmationRegistrationModel, ErrorModel>
     {
@@ -19,8 +20,19 @@ namespace Engines.Engines.ConformationRegistrationEngine
             {
                 LogOut(driver);
             }
+            try
+            {
+                Authorize(driver, model.EmailLogin, model.EmailPassword);
 
-            Authorize(driver, model.EmailLogin, model.EmailPassword);
+            }
+            catch (Exception ex)
+            {
+
+                return new ErrorModel
+                {
+                    ErrorText = ex.Message
+                };
+            }
             return ConformatRegistration(driver, model.FacebookPassword);
         }
 
@@ -54,7 +66,6 @@ namespace Engines.Engines.ConformationRegistrationEngine
 
         private void Authorize(RemoteWebDriver driver, string login, string password)
         {
-
             IWebElement loginInput = GetWebElementById(driver, "mailbox__login");
             IWebElement passwordInput = GetWebElementById(driver, "mailbox__password");
             IWebElement authButton = GetWebElementById(driver, "mailbox__auth__button");
@@ -92,7 +103,7 @@ namespace Engines.Engines.ConformationRegistrationEngine
             AvoidFacebookMessage(driver);
 
             Thread.Sleep(3000);
-            var error = registrationEngine.ChekLockStatus(driver);
+            var error = RegistrationEngine.RegistrationEngine.ChekLockStatus(driver);
             if (error != null)
                 return new ErrorModel
                 {

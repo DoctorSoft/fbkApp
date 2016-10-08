@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Threading;
 using ChangeExcel.Implementation;
+using Constants;
 using Engines.Engines.AuthorizationEngine;
+using Engines.Engines.ConfirmationRegistrationEngine;
 using Engines.Engines.ConformationRegistrationEngine;
 using Engines.Engines.FillingGeneralInformationEngine;
+using Engines.Engines.GetCurrentStatusEngine;
 using Engines.Engines.GetIpEngine;
 using Engines.Engines.InitialProfileSetupEngine;
 using Engines.Engines.LoadUserAvatar;
@@ -113,6 +117,39 @@ namespace FaceBook
                 Login = model.Email,
                 Password = model.FacebookPassword
             });
+        }
+
+        public ErrorModel GetCurrentPageStatus(RemoteWebDriver driver, RegistrationSteps step)
+        {
+            return new GetCurrentStatusEngine().Execute(driver, new GetCurrentStatusModel
+            {
+                Step = step
+            });
+        }
+
+        public ErrorModel ProcessingStatus(RemoteWebDriver driver, RegistrationSteps step)
+        {
+            var status = new GetCurrentStatusEngine().Execute(driver, new GetCurrentStatusModel
+            {
+                Step = step
+            });
+
+            switch (status.Code)
+            {
+                 case  ErrorCodes.VerifyAccount:
+                    break;
+
+                case ErrorCodes.BindingToThePhoneNumber:
+                    break;
+
+                case ErrorCodes.AccountDisabled:
+                    break;
+
+                case 0:
+                    break;
+            }
+
+            return null;
         }
     }
 }

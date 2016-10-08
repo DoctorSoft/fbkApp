@@ -33,48 +33,63 @@ namespace FaceBook
 
             Log.Information("Getting users");
             var userList = service.GetRegistrationUserData(inpuDataProvider);
-            var user = userList.UsersData.FirstOrDefault(); //current user
+            var user = userList.UsersData.FirstOrDefault();
 
-            Log.Information("Registration");
+            //var status = service.GetCurrentPageStatus(driver, RegistrationSteps.LoadRegistrationPage);
 
-//            service.Authorize(driver, user);
-//            service.FillingGeneralInformation(driver, user);
-            
             var status = service.Registration(driver, user);
+
+            //status = service.ProcessingStatus(driver, RegistrationSteps.SubmitRegistrationData);
+
             if (status.StatusRegistration == false)
             {
                 new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
+                return;
             }
-            else
+
+//            if (status.Error != null)
+//            {
+//                if (status.Error.Code == ErrorCodes.VerifyAccount)
+//                {
+            var conformationError = service.ConfirmRegistration(driver, user);
+            if (conformationError == null)
             {
-                if (status.Error.Code == ErrorCodes.VerifyAccount)
-                {
-                    var conformationError = service.ConfirmRegistration(driver, user);
-                    if (conformationError == null)
-                    {
-                        user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+                user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
 
-                        new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
 
-                        service.InitialProfileSetup(driver);
+                var folder = Directory.GetCurrentDirectory();
+                var imagesDirectory = Path.Combine(folder, "images");
+                service.LoadUserAvatar(driver, imagesDirectory);
 
-                        service.FillingGeneralInformation(driver, user);
+                service.InitialProfileSetup(driver);
 
-                        //Log.Information("Loading avatar");
-
-                        /*var folder = Directory.GetCurrentDirectory();
-                        var imagesDirectory = Path.Combine(folder, "images");
-                        service.LoadUserAvatar(driver, imagesDirectory);*/
-                    }
-                    else
-                    {
-                        new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, conformationError);
-                    }
-                }
+                service.FillingGeneralInformation(driver, user);
+                return;
             }
-            Log.Information("End application running");
-        
+            new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, conformationError);
+            return;
+
+            //Log.Information("Loading avatar");
+
+
         }
 
     }
 }
+
+//                }
+//
+//                new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, status.Error);
+//                return;
+            
+//                    user.HomepageUrl = FacebookHelper.GetHomepageUrl(driver);
+//
+//                    new RecordInExcel("usersDB.xlsx").RecordRegistratedData(user, null);
+//
+//                    service.InitialProfileSetup(driver);
+//            service.ConfirmRegistration(driver, user);
+//            service.FillingGeneralInformation(driver, user);
+//            service.InitialProfileSetup(driver);
+//            Log.Information("End application running");
+

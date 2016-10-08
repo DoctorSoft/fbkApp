@@ -14,6 +14,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 {
     public class FillingGeneralInformationEngine : AbstractEngine<FillingGeneralInformationModel, VoidResult>
     {
+        private const int SleepTime = 4000;
+
         protected override VoidResult ExecuteEngine(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
             FillingWorkAndEducation(driver, model);
@@ -30,42 +32,42 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             NavigateToUrl(driver, model.UserHomePageUrl + SettingsUrl.OverviewOptionsEducationPostfix.GetDiscription());
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
 
             AvoidFacebookMessage(driver);
 
             FillWorkSection(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
 
             FillSkillsSection(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
 
             FillUniversitySection(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
 
             FillSchoolSection(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
         }
 
         private void FillingLiving(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
             NavigateToUrl(driver, model.UserHomePageUrl + SettingsUrl.OverviewOptionsLivingnPostfix.GetDiscription());
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
 
             AvoidFacebookMessage(driver);
 
             FillCurrentCity(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
 
             FillNativeCity(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
         }
         
         private void FillingsRelationship(RemoteWebDriver driver, FillingGeneralInformationModel model)
@@ -73,13 +75,13 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             NavigateToUrl(driver,
                 model.UserHomePageUrl + SettingsUrl.OverviewOptionsRelationshipPostfix.GetDiscription());
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
 
             AvoidFacebookMessage(driver);
 
             FillFamilyStatus(driver, model);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
         }
 
         private void FillWorkSection(RemoteWebDriver driver, FillingGeneralInformationModel model)
@@ -94,7 +96,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (workLink == null) return;
             HtmlHelper.ClickElement(workLink);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var company =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("employer_name"))).FirstOrDefault();
@@ -113,12 +115,12 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 company.SendKeys(model.Company);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var result = ChooseAnswerInComboBox(driver);
             HtmlHelper.ClickElement(result);
             
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             if (post != null)
             {
@@ -126,12 +128,12 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 post.SendKeys(model.Post);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             result = ChooseAnswerInComboBox(driver);
             HtmlHelper.ClickElement(result);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             if ((city != null) && (city.Text == ""))
             {
@@ -139,18 +141,20 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 city.SendKeys(model.CityWork);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             result = ChooseAnswerInComboBox(driver);
             HtmlHelper.ClickElement(result);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             if (description != null)
             {
                 description.Clear();
                 description.SendKeys(model.DescriptionWork);
             }
+
+            Thread.Sleep(SleepTime);
 
             HtmlHelper.ClickElement(buttonWorkApply);
         }
@@ -169,7 +173,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             HtmlHelper.ClickElement(skillLink);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(SleepTime);
 
             var skills = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("._58al")));
             var buttonSkillApply = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("__submit__"))).FirstOrDefault();
@@ -179,13 +183,10 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 skills.SendKeys(model.Skills);
             }
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
 
-            SendKeys.SendWait("{DOWN}");
-
-            Thread.Sleep(500);
-
-            SendKeys.SendWait("{ENTER}");
+            driver.Keyboard.PressKey(OpenQA.Selenium.Keys.Enter);
+            Thread.Sleep(SleepTime);
 
             HtmlHelper.ClickElement(buttonSkillApply);
         }
@@ -203,7 +204,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (univercityLink == null) return;
             HtmlHelper.ClickElement(univercityLink);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var univercity =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
@@ -227,13 +228,17 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 univercity.SendKeys(model.Univercity);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var result = ChooseAnswerInComboBox(driver);
+
+            Thread.Sleep(SleepTime);
             
             HtmlHelper.ClickElement(result);
 
-            var titleNewUnivercityWindow = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".lfloat._ohe")));
+            var titlesNewUnivercityWindow = driver.FindElements(By.CssSelector("lfloat _ohe")).Where(m=>m.Displayed);
+            var titleNewUnivercityWindow = titlesNewUnivercityWindow.FirstOrDefault(m => m.Text == "Создать новый вуз");
+
             if (titleNewUnivercityWindow != null) CreateNewUnivercity(driver, model);
 
             var city = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("city"))).FirstOrDefault();
@@ -241,14 +246,14 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             {
                 city.SendKeys(model.UnivercityCity);
 
-                Thread.Sleep(2000);
+                Thread.Sleep(SleepTime);
 
                 result = ChooseAnswerInComboBox(driver);
 
                 HtmlHelper.ClickElement(result);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             if (descriptionUnivercity != null)
             {
@@ -256,7 +261,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 descriptionUnivercity.SendKeys(model.DescriptionUnivercity);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             if (specialization1 != null)
             {
@@ -264,7 +269,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 specialization1.SendKeys(model.Specializations);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             result = ChooseAnswerInComboBox(driver);
 
@@ -272,6 +277,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             {
                 HtmlHelper.ClickElement(result);
             }
+
+            Thread.Sleep(SleepTime);
 
             HtmlHelper.ClickElement(buttonUnivercityApply);
         }
@@ -290,6 +297,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             HtmlHelper.ClickElement(schoolLink);
 
+            Thread.Sleep(SleepTime);
+
             var school =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("school_text"))).FirstOrDefault();
             var descriptionSchool =
@@ -303,19 +312,24 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 descriptionSchool.SendKeys(model.DescriptionSchool);
             }
 
+            Thread.Sleep(SleepTime);
+
             if (school != null)
             {
                 school.Clear();
                 school.SendKeys(model.School);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var result = ChooseAnswerInComboBox(driver);
 
             HtmlHelper.ClickElement(result);
 
-            var titleNewSchoolWindow = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".lfloat._ohe"))).FirstOrDefault();
+            Thread.Sleep(SleepTime);
+
+            var titlesNewSchoolWindow = driver.FindElements(By.CssSelector("lfloat _ohe")).Where(m => m.Displayed);
+            var titleNewSchoolWindow = titlesNewSchoolWindow.FirstOrDefault(m => m.Text == "Создать новую школу");
             if (titleNewSchoolWindow != null) CreateNewSchool(driver, model);
 
             var city = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("city"))).FirstOrDefault();
@@ -323,7 +337,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             {
                 city.SendKeys(model.SchoolCity);
 
-                Thread.Sleep(2000);
+                Thread.Sleep(SleepTime);
 
                 result = ChooseAnswerInComboBox(driver);
 
@@ -345,7 +359,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             HtmlHelper.ClickElement(linkCurrentCity);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var currentCity =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".inputtext.textInput")))
@@ -359,12 +373,16 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 currentCity.SendKeys(model.CurrentCity);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
                 .FirstOrDefault(m => m.GetAttribute("class") == "page");
 
+            Thread.Sleep(SleepTime);
+
             HtmlHelper.ClickElement(result);
+
+            Thread.Sleep(SleepTime);
 
             HtmlHelper.ClickElement(buttonCurrentCityApply);
         }
@@ -380,6 +398,8 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (linkNativeCity == null) return;
             HtmlHelper.ClickElement(linkNativeCity);
 
+            Thread.Sleep(SleepTime);
+
             var nativeCity =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.CssSelector(".inputtext.textInput")))
                     .FirstOrDefault();
@@ -392,12 +412,16 @@ namespace Engines.Engines.FillingGeneralInformationEngine
                 nativeCity.SendKeys(model.NativeCity);
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var result = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
                 .FirstOrDefault(m => m.GetAttribute("class") == "page");
 
+            Thread.Sleep(SleepTime);
+
             HtmlHelper.ClickElement(result);
+
+            Thread.Sleep(SleepTime);
 
             HtmlHelper.ClickElement(buttonNativeCityApply);
         }
@@ -414,7 +438,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             HtmlHelper.ClickElement(linkFamilyStatus);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var selectFamilyStatus =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.Name("status"))).FirstOrDefault();
@@ -423,7 +447,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             HtmlHelper.ClickElement(selectFamilyStatus);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var answer =
                 wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("option")))
@@ -437,25 +461,27 @@ namespace Engines.Engines.FillingGeneralInformationEngine
 
             HtmlHelper.ClickElement(answer);
 
+            Thread.Sleep(SleepTime);
+
             HtmlHelper.ClickElement(buttonFamilyStatus);
         }
 
         private IWebElement ChooseAnswerInComboBox(RemoteWebDriver driver)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-
+            
             return wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
-                .FirstOrDefault(m => m.GetAttribute("class") == "addnew calltoaction") ??
-                   wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
                        .FirstOrDefault(
-                           m => m.GetAttribute("class") == "page" || m.GetAttribute("class") == "page selected");
+                           m => m.GetAttribute("class") == "page" || m.GetAttribute("class") == "page selected") ?? 
+                           wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.TagName("li")))
+                .FirstOrDefault(m => m.GetAttribute("class") == "addnew calltoaction");
         }
 
         private void CreateNewUnivercity(RemoteWebDriver driver, FillingGeneralInformationModel model)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
 
-            Thread.Sleep(1000);
+            Thread.Sleep(SleepTime);
 
             var city =
                 wait.Until(
@@ -466,15 +492,15 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             city.Clear();
             city.SendKeys(model.UnivercityCity);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             SendKeys.SendWait("{DOWN}");
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
  
             SendKeys.SendWait("{ENTER}");
 
-            Thread.Sleep(1000);
+            Thread.Sleep(SleepTime);
 
             var button =
                 wait.Until(
@@ -489,7 +515,7 @@ namespace Engines.Engines.FillingGeneralInformationEngine
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
 
-            Thread.Sleep(1000);
+            Thread.Sleep(SleepTime);
 
             var city =
                 wait.Until(
@@ -498,19 +524,19 @@ namespace Engines.Engines.FillingGeneralInformationEngine
             if (city == null) return;
             city.Clear();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             city.SendKeys(model.SchoolCity);
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
 
             SendKeys.SendWait("{DOWN}");
 
-            Thread.Sleep(500);
+            Thread.Sleep(SleepTime);
 
             SendKeys.SendWait("{ENTER}");
 
-            Thread.Sleep(2000);
+            Thread.Sleep(SleepTime);
 
             var button =
                 wait.Until(

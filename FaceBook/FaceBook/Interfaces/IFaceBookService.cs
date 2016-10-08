@@ -1,4 +1,5 @@
-﻿using Engines.Engines.Models;
+﻿using Constants;
+using Engines.Engines.Models;
 using Engines.Engines.RegistrationEngine;
 using InputData.InputModels;
 using InputData.Interfaces;
@@ -11,5 +12,9 @@ namespace FaceBook.Interfaces
         StatusRegistrationModel Registration(RemoteWebDriver driver, RegistrationModel userModel);
 
         InputDataModel GetRegistrationUserData(IInputDataProvider inputDataProvider);
+
+        ErrorModel GetCurrentPageStatus(RemoteWebDriver driver, RegistrationSteps step);
+
+        ErrorModel ProcessingStatus(RemoteWebDriver driver, RegistrationSteps step);
     }
 }

@@ -44,6 +44,7 @@
     <Compile Include="Gender.cs" />
     <Compile Include="OptionAnswers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistrationSteps.cs" />
     <Compile Include="SettingsUrl.cs" />
   </ItemGroup>
   <ItemGroup>

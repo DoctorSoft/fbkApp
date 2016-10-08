@@ -53,8 +53,11 @@ namespace Engines.Engines.RegistrationEngine
                 AddTextInElement(passwordInput, model.FacebookPassword);
 
                 HtmlHelper.GetSelectElement(birthdayDay, model.Birthday.Day);
+                Thread.Sleep(1500);
                 HtmlHelper.GetSelectElement(birthdayMonth, model.Birthday.Month);
+                Thread.Sleep(1500);
                 HtmlHelper.GetSelectElement(birthdayYear, model.Birthday.Year);
+                Thread.Sleep(1500);
 
                 HtmlHelper.ClickElement(gender);
 
@@ -77,7 +80,11 @@ namespace Engines.Engines.RegistrationEngine
                         return new StatusRegistrationModel
                         {
                             StatusRegistration = true,
-                            Error = error
+                            Error = new ErrorModel
+                            {
+                                Code = ErrorCodes.VerifyAccount,
+                                ErrorText = "Подтвердите регистрацию"
+                            }
                         };
                     }
                     return new StatusRegistrationModel
